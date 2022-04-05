@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.OdsApi.Sdk", "src\EdFi.OdsApi.Sdk\EdFi.OdsApi.Sdk.csproj", "{E5DB9800-8FAA-498C-96E7-10A79E7D1D81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.AlmaToEdFi.Cmd", "EdFi.OdsApi.SdkClient\EdFi.AlmaToEdFi.Cmd.csproj", "{68F28896-04F4-4CD5-801E-1C5DB785D907}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alma.Api.Sdk", "Alma.Api.Sdk\Alma.Api.Sdk.csproj", "{7D2A30CE-C18C-4A15-ADB6-AA6BB390C691}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdFi.AlmaToEdFi.Common", "EdFi.AlmaToEdFi.Common\EdFi.AlmaToEdFi.Common.csproj", "{F6BEF139-396B-4914-99C5-2EC830421FF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5DB9800-8FAA-498C-96E7-10A79E7D1D81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5DB9800-8FAA-498C-96E7-10A79E7D1D81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5DB9800-8FAA-498C-96E7-10A79E7D1D81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5DB9800-8FAA-498C-96E7-10A79E7D1D81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68F28896-04F4-4CD5-801E-1C5DB785D907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68F28896-04F4-4CD5-801E-1C5DB785D907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68F28896-04F4-4CD5-801E-1C5DB785D907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68F28896-04F4-4CD5-801E-1C5DB785D907}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D2A30CE-C18C-4A15-ADB6-AA6BB390C691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D2A30CE-C18C-4A15-ADB6-AA6BB390C691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D2A30CE-C18C-4A15-ADB6-AA6BB390C691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D2A30CE-C18C-4A15-ADB6-AA6BB390C691}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6BEF139-396B-4914-99C5-2EC830421FF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6BEF139-396B-4914-99C5-2EC830421FF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6BEF139-396B-4914-99C5-2EC830421FF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6BEF139-396B-4914-99C5-2EC830421FF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4021CDE0-284F-4EC7-AB0F-86761C070C69}
+	EndGlobalSection
+EndGlobal

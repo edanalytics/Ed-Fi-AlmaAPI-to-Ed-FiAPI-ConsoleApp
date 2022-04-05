@@ -1,0 +1,14 @@
+{
+    "Descriptor": "InstitutionTelephoneNumberTypeDescriptor",
+    "Mapping": [
+      {
+        "Src": "Main",
+        "Dest": "uri://ed-fi.org/InstitutionTelephoneNumberTypeDescriptor#Main"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/InstitutionTelephoneNumberTypeDescriptor#Other"
+      }
+
+    ]
+  }

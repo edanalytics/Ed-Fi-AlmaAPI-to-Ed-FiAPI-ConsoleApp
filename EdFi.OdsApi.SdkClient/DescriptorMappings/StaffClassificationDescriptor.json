@@ -1,0 +1,25 @@
+{
+    "Descriptor": "StaffClassificationDescriptor",
+    "Mapping": [
+      {
+        "Src": "Teacher",
+        "Dest": "uri://ed-fi.org/StaffClassificationDescriptor#Teacher"
+      },
+      {
+        "Src": "Teacher (Report Card Admin)",
+        "Dest": "uri://ed-fi.org/StaffClassificationDescriptor#Teacher"
+      },
+      {
+        "Src": "School Administrator",
+        "Dest": "uri://ed-fi.org/StaffClassificationDescriptor#School Administrator"
+      },
+      {
+        "Src": "General Staff",
+        "Dest": "uri://ed-fi.org/StaffClassificationDescriptor#All Other Support Staff"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/StaffClassificationDescriptor#Other"
+      }
+    ]
+}

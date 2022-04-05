@@ -1,0 +1,30 @@
+{
+    "Descriptor": "TelephoneNumberTypeDescriptor",
+    "Mapping": [
+      {
+        "Src": "Not Specified",
+        "Dest": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Other"
+      },
+      {
+        "Src": "Home",
+        "Dest": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Home"
+      },
+      {
+        "Src": "Work",
+        "Dest": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Work"
+      },
+      {
+        "Src": "Fax",
+        "Dest": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Fax"
+      },
+      {
+        "Src": "Mobile",
+        "Dest": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Mobile"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/TelephoneNumberTypeDescriptor#Other"
+      }
+
+    ]
+  }

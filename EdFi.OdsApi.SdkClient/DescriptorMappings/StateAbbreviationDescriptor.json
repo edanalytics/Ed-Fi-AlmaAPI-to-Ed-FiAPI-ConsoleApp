@@ -1,0 +1,209 @@
+{
+    "Descriptor": "StateAbbreviationDescriptor",
+    "Mapping": [
+      {
+        "Src": "AL",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#AL"
+      },
+      {
+        "Src": "AK",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#AK"
+      },
+      {
+        "Src": "AZ",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#AZ"
+      },
+      {
+        "Src": "AR",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#AR"
+      },
+      {
+        "Src": "CA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#CA"
+      },
+      {
+        "Src": "CO",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#CO"
+      },
+      {
+        "Src": "CT",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#CT"
+      },
+      {
+        "Src": "DE",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#DE"
+      },
+      {
+        "Src": "FL",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#FL"
+      },
+      {
+        "Src": "GA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#GA"
+      },
+      {
+        "Src": "HI",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#HI"
+      },
+      {
+        "Src": "ID",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#ID"
+      },
+      {
+        "Src": "IL",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#IL"
+      },
+      {
+        "Src": "IN",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#IN"
+      },
+      {
+        "Src": "IA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#IA"
+      },
+      {
+        "Src": "KS",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#KS"
+      },
+      {
+        "Src": "KY",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#KY"
+      },
+      {
+        "Src": "LA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#LA"
+      },
+      {
+        "Src": "ME",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#ME"
+      },
+      {
+        "Src": "MD",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MD"
+      },
+      {
+        "Src": "MA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MA"
+      },
+      {
+        "Src": "MI",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MI"
+      },
+      {
+        "Src": "MN",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MN"
+      },
+      {
+        "Src": "MS",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MS"
+      },
+      {
+        "Src": "MO",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MO"
+      },
+      {
+        "Src": "MT",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#MT"
+      },
+      {
+        "Src": "NE",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NE"
+      },
+      {
+        "Src": "NV",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NV"
+      },
+      {
+        "Src": "NH",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NH"
+      },
+      {
+        "Src": "NJ",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NJ"
+      },
+      {
+        "Src": "NM",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NM"
+      },
+      {
+        "Src": "NY",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NY"
+      },
+      {
+        "Src": "NC",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#NC"
+      },
+      {
+        "Src": "ND",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#ND"
+      },
+      {
+        "Src": "OH",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#OH"
+      },
+      {
+        "Src": "OK",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#OK"
+      },
+      {
+        "Src": "OR",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#OR"
+      },
+      {
+        "Src": "PA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#PA"
+      },
+      {
+        "Src": "RI",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#RI"
+      },
+      {
+        "Src": "SC",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#SC"
+      },
+      {
+        "Src": "SD",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#SD"
+      },
+      {
+        "Src": "TN",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#TN"
+      },
+      {
+        "Src": "TX",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#TX"
+      },
+      {
+        "Src": "UT",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#UT"
+      },
+      {
+        "Src": "VT",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#VT"
+      },
+      {
+        "Src": "VA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#VA"
+      },
+      {
+        "Src": "WA",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#WA"
+      },
+      {
+        "Src": "WV",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#WV"
+      },
+      {
+        "Src": "WI",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#WI"
+      },
+      {
+        "Src": "WY",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#WY"
+      },
+      {
+        "Src": "Default",
+        "Dest": "uri://ed-fi.org/StateAbbreviationDescriptor#WY"
+      }
+    ]
+}

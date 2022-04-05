@@ -1,0 +1,30 @@
+{
+    "Descriptor": "AddressTypeDescriptor",
+    "Mapping": [
+      {
+        "Src": "Billing",
+        "Dest": "uri://ed-fi.org/AddressTypeDescriptor#Billing"
+      },
+      {
+        "Src": "Mailing",
+        "Dest": "uri://ed-fi.org/AddressTypeDescriptor#Mailing"
+      },
+      {
+        "Src": "Home",
+        "Dest": "uri://ed-fi.org/AddressTypeDescriptor#Home"
+      },
+      {
+        "Src": "Physical",
+        "Dest": "uri://ed-fi.org/AddressTypeDescriptor#Physical"
+      },
+      {
+        "Src": "Work",
+        "Dest": "uri://ed-fi.org/AddressTypeDescriptor#Work"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/AddressTypeDescriptor#Other"
+      }
+
+    ]
+  }

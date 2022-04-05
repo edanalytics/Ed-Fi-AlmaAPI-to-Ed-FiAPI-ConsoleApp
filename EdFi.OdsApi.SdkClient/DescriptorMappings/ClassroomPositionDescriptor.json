@@ -1,0 +1,48 @@
+{
+    "Descriptor": "ClassroomPositionDescriptor",
+    "Mapping": [
+
+      {
+        "Src": "Teacher",
+        "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Teacher of Record"
+      },
+      {
+        "Src": "Teacher (Report Card Admin)",
+        "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Teacher of Record"
+      }
+      //,
+      //{
+      //  "Src": "Associated Contact",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "Parent",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "Emergency Contact",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "default",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "Student",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "General Staff",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "Office Staff",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //},
+      //{
+      //  "Src": "School Administrator",
+      //  "Dest": "uri://ed-fi.org/ClassroomPositionDescriptor#Other"
+      //}
+
+    ]
+  }

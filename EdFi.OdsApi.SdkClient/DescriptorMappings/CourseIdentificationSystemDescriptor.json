@@ -1,0 +1,9 @@
+{
+    "Descriptor": "CourseIdentificationSystemDescriptor",
+    "Mapping": [
+      {
+        "Src": "State course code",
+        "Dest": "uri://ed-fi.org/CourseIdentificationSystemDescriptor#State course code"
+      }
+    ]
+}

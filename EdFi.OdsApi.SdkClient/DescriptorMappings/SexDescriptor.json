@@ -1,0 +1,22 @@
+{
+    "Descriptor": "SexDescriptor",
+    "Mapping": [
+      {
+        "Src": "Not Specified",
+        "Dest": "uri://ed-fi.org/SexDescriptor#Not Selected"
+      },
+      {
+        "Src": "Female",
+        "Dest": "uri://ed-fi.org/SexDescriptor#Female"
+      },
+      {
+        "Src": "Male",
+        "Dest": "uri://ed-fi.org/SexDescriptor#Male"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/SexDescriptor#Not Selected"
+      }
+
+    ]
+}

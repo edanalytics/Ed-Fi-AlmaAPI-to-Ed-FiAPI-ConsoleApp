@@ -1,0 +1,14 @@
+{
+    "Descriptor": "ElectronicMailTypeDescriptor",
+    "Mapping": [
+      {
+        "Src": "Other",
+        "Dest": "uri://ed-fi.org/ElectronicMailTypeDescriptor#Other"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/ElectronicMailTypeDescriptor#Other"
+      }
+
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "Descriptor": "RaceDescriptor",
+  "Mapping": [
+    {
+      "Src": "American Indian or Alaska Native",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#American Indian - Alaska Native"
+    },
+    {
+      "Src": "American Indian - Alaska Native",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#American Indian - Alaska Native"
+    },
+    {
+      "Src": "Asian",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Asian"
+    },
+    {
+      "Src": "Black - African American",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Black - African American"
+    },
+    {
+      "Src": "Black or African American",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Black - African American"
+    },
+    {
+      "Src": "Choose Not to Respond",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Choose Not to Respond"
+    },
+    {
+      "Src": "Native Hawaiian or Pacific Islander",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Native Hawaiian - Pacific Islander"
+    },
+    {
+      "Src": "Native Hawaiian - Pacific Islander",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Native Hawaiian - Pacific Islander"
+    },
+    {
+      "Src": "White",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#White"
+    },
+    {
+      "Src": "default",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Other"
+    },
+    {
+      "Src": "Other",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Other"
+    },
+    {
+      "Src": "Not Specified",
+      "Dest": "uri://ed-fi.org/RaceDescriptor#Other"
+    }
+
+  ]
+}

@@ -1,0 +1,18 @@
+{
+    "Descriptor": "EducationOrganizationCategoryDescriptor",
+    "Mapping": [
+      {
+        "Src": "school",
+        "Dest": "uri://ed-fi.org/EducationOrganizationCategoryDescriptor#School"
+      },
+      {
+        "Src": "LEA",
+        "Dest": "uri://ed-fi.org/EducationOrganizationCategoryDescriptor#Local Education Agency"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/EducationOrganizationCategoryDescriptor#Other"
+      }
+
+    ]
+}

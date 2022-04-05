@@ -1,0 +1,26 @@
+{
+    "Descriptor": "StudentIdentificationSystemDescriptor",
+    "Mapping": [
+      {
+        "Src": "Local",
+        "Dest": "uri://ed-fi.org/StudentIdentificationSystemDescriptor#Local"
+      },
+      {
+        "Src": "State",
+        "Dest": "uri://ed-fi.org/StudentIdentificationSystemDescriptor#State"
+      },
+      {
+        "Src": "District",
+        "Dest": "uri://ed-fi.org/StudentIdentificationSystemDescriptor#District"
+      },
+      {
+        "Src": "School",
+        "Dest": "uri://ed-fi.org/StudentIdentificationSystemDescriptor#School"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/StudentIdentificationSystemDescriptor#School"
+      }
+
+    ]
+  }

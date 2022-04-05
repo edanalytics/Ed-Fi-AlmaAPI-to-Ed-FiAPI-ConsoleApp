@@ -1,0 +1,22 @@
+{
+    "Descriptor": "CalendarTypeDescriptor",
+    "Mapping": [
+      {
+        "Src": "school",
+        "Dest": "uri://ed-fi.org/CalendarTypeDescriptor#School"
+      },
+      {
+        "Src": "staff",
+        "Dest": "uri://ed-fi.org/CalendarTypeDescriptor#Staff"
+      },
+      {
+        "Src": "grade level",
+        "Dest": "uri://ed-fi.org/CalendarTypeDescriptor#Grade Level"
+      },
+      {
+        "Src": "default",
+        "Dest": ""
+      }
+
+    ]
+}

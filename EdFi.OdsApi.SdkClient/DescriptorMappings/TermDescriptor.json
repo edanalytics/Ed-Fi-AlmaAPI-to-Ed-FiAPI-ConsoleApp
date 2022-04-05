@@ -1,0 +1,26 @@
+{
+    "Descriptor": "TermDescriptor",
+    "Mapping": [
+      {
+        "Src": "semester",
+        "Dest": "uri://ed-fi.org/TermDescriptor#Semester"
+      },
+      {
+        "Src": "semesters",
+        "Dest": "uri://ed-fi.org/TermDescriptor#Semester"
+      },
+      {
+        "Src": "quarter",
+        "Dest": "uri://ed-fi.org/TermDescriptor#Quarter"
+      },
+      {
+        "Src": "quarters",
+        "Dest": "uri://ed-fi.org/TermDescriptor#Quarter"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/TermDescriptor#Other"
+      }
+
+    ]
+  }

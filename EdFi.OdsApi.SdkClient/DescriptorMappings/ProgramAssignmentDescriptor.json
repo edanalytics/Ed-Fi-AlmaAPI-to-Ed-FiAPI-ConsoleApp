@@ -1,0 +1,14 @@
+{
+    "Descriptor": "ProgramAssignmentDescriptor",
+    "Mapping": [
+      {
+        "Src": "Teacher",
+        "Dest": "uri://ed-fi.org/ProgramAssignmentDescriptor#Regular Education"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/ProgramAssignmentDescriptor#Other"
+      }
+
+    ]
+  }

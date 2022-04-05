@@ -1,0 +1,81 @@
+{
+    "Descriptor": "AcademicSubjectDescriptor",
+    "Mapping": [
+      {
+        "Src": "St Skills/Conduct",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      },
+      {
+        "Src": "Social Studies",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Social Studies"
+      },
+      {
+        "Src": "History Social",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Sciences and History"
+      },
+      {
+        "Src": "Miscellaneous",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Composite"
+      },
+      {
+        "Src": "Band",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      },
+      {
+        "Src": "English",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#English"
+      },
+      {
+        "Src": "Career and Technical Education",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Career and Technical Education"
+      },
+      {
+        "Src": "Mathematics",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Mathematics"
+      },
+      {
+        "Src": "Concurrent Enrollment",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      },
+      {
+        "Src": "Elective",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      },
+      {
+        "Src": "Reading",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Reading"
+      },
+      {
+        "Src": "Science",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Science"
+      },
+      {
+        "Src": "Language Arts",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#English Language Arts"
+      },
+      {
+        "Src": "Art",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Fine and Performing Arts"
+      },
+      {
+        "Src": "Foreign Languages",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Foreign Language and Literature"
+      },
+      {
+        "Src": "Special Education",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      },
+      {
+        "Src": "Music",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      },
+      {
+        "Src": "Physical Education/Helath",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Physical, Health, and Safety Education"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/AcademicSubjectDescriptor#Other"
+      }
+    ]
+}

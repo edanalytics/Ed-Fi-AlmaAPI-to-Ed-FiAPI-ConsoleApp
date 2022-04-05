@@ -1,0 +1,18 @@
+{
+    "Descriptor": "EmploymentStatusDescriptor",
+    "Mapping": [
+      {
+        "Src": "Active",
+        "Dest": "uri://ed-fi.org/EmploymentStatusDescriptor#Contractual"
+      },
+      {
+        "Src": "Not Activated",
+        "Dest": "uri://ed-fi.org/EmploymentStatusDescriptor#Non-contractual"
+      },
+      {
+        "Src": "default",
+        "Dest": "uri://ed-fi.org/EmploymentStatusDescriptor#Other"
+      }
+
+    ]
+}
