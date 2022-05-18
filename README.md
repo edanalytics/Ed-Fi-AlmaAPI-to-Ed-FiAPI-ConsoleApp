@@ -61,6 +61,7 @@ Following the appsettings.json Structure:
 **For StartDate**.
 
 In the Name fiel, type : AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/StartDate
+
 In the Value fiel, type: **2020-08-24** , the date should be a valid date and existing in Alma Api.
 
 **For EndDate**.
