@@ -60,13 +60,13 @@ Following the appsettings.json Structure:
 
 **For StartDate**.
 
-In the Name fiel type : AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/StartDate
-in the Value fiel type: **2020-08-24** , the date should be a valid date and existing in Alma Api.
+In the Name fiel, type : AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/StartDate
+In the Value fiel, type: **2020-08-24** , the date should be a valid date and existing in Alma Api.
 
 **For EndDate**.
 
-In the Name fiel type : AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/EndDate
-in the Value fiel type:  **2020-10-15** , the date should be a valid date and existing in Alma Api.
+In the Name fiel,type : AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/EndDate
+In the Value fiel, type:  **2020-10-15** , the date should be a valid date and existing in Alma Api.
 
  AlmaApi/ is a prefix and is important to use that name to the aplication works, if you want to change the prefix name you need to change it in the application code as well;
  
