@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma;
@@ -33,15 +33,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
             _calendarDateTransformer = calendarDateTransformer;
             _appLog = logger.CreateLogger("Calendar Date Processor");
         }
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Calendar dates from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
-            var almaResponse = _apiAlma.SchoolCalendarEvents.Extract(almaSchoolCode);
+            //Check if schoolYearId is not emty
+            var almaResponse = _apiAlma.SchoolCalendarEvents.Extract(almaSchoolCode,schoolYearId);
             Transform(stateSchoolId, almaSchoolCode, almaResponse.response).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");
             _appLog.LogInformation($"Processed {almaResponse.response.Count} Calendar Dates.");

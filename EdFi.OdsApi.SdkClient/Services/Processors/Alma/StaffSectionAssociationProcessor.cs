@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
@@ -32,19 +32,19 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
             _appLog = logger.CreateLogger("Staff Section Association Processor");
         }
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Staff Section Association POST new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // TODO: Change to ALMA once we have access to their API.
             // Extract - Get students Section Association from the source API
-            var almaStaffSectionResponse = _apiAlma.StaffSection.Extract(almaSchoolCode);
-            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode);
-            var userRoles = _apiAlma.UserRoles.Extract(almaSchoolCode);
+            var almaStaffSectionResponse = _apiAlma.StaffSection.Extract(almaSchoolCode,schoolYearId);
+            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
+            var userRoles = _apiAlma.UserRoles.Extract(almaSchoolCode,schoolYearId);
             Transform(stateSchoolId, almaStaffSectionResponse, almaSessions, userRoles).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($"");
             _appLog.LogInformation($"Processed {almaStaffSectionResponse.Count} Staff Sections Association.");

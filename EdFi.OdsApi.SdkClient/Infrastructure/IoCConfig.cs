@@ -14,15 +14,16 @@ using EdFi.OdsApi.Sdk.Client;
 using System;
 using EdFi.AlmaToEdFi.Cmd.Model;
 using System.IO;
+using Amazon.Runtime;
 
 namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
 {
     public static class IoCConfig
     {
-        public static void RegisterDependencies(IServiceCollection container, IConfiguration config)
+        public static void RegisterDependencies(IServiceCollection container, IConfiguration config, AppSettings appSettings)
         {
             Alma.Api.Sdk.Infrastructure.IoCConfig.RegisterDependencies(container, config);
-            RegisterApplicationDependencies(container, config);
+            RegisterApplicationDependencies(container, config, appSettings);
             RegisterExtractorsByConvention<ISchoolYearsExtractor>(container);
             RegisterTransformersByConvention<IEducationOrganizationAddressTransformer>(container);
             RegisterProcessorsByConvention<IProcessor>(container);
@@ -31,16 +32,29 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
             container.AddTransient<App>();
         }
 
-        private static void RegisterApplicationDependencies(IServiceCollection container, IConfiguration config)
+
+        private static void RegisterApplicationDependencies(IServiceCollection container, IConfiguration config, AppSettings appSettings)
         {
-            string filepath = Path.Combine(Environment.CurrentDirectory, "Log", $"AlmaAppLog{DateTime.Now.ToString("yyyy-MM-dd")}.log");
-         
             // Configure the Logger
             container.AddLogging(builder =>
             {
                 builder.AddConsole();
                 builder.AddDebug();
-                builder.AddFile(filepath, true);
+                //check if the log going for CloudWatch or File
+                if (!string.IsNullOrEmpty(appSettings.AwsConfiguration.AWSAccessKey)
+                    && !string.IsNullOrEmpty(appSettings.AwsConfiguration.AWSSecretKey)
+                    && !string.IsNullOrEmpty(appSettings.AwsConfiguration.AWSLoggingGroupName))
+                {
+                    var configLog = new AWS.Logger.AWSLoggerConfig(appSettings.AwsConfiguration.AWSLoggingGroupName);
+                    configLog.Region = appSettings.AwsConfiguration.AWSRegion;
+                    configLog.Credentials = new BasicAWSCredentials(appSettings.AwsConfiguration.AWSAccessKey, appSettings.AwsConfiguration.AWSSecretKey);
+                    builder.AddAWSProvider(configLog);
+                }
+                else
+                {
+                    string logPath = Path.Combine(Environment.CurrentDirectory, "Log", $"AlmaAppLog{DateTime.Now.ToString("yyyy-MM-dd")}.log");
+                    builder.AddFile(logPath, true);
+                }
             });
 
             // Register the IOptions for app settings.

@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
@@ -35,15 +35,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         }
 
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Courses from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
-            var almaResponse = _apiAlma.Courses.Extract(almaSchoolCode);
+            var almaResponse = _apiAlma.Courses.Extract(almaSchoolCode,schoolYearId);
             Transform(stateSchoolId,almaResponse).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");
             _appLog.LogInformation($"Processed {almaResponse.Count} courses.");

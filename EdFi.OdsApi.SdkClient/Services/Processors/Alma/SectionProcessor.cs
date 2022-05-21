@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
@@ -33,16 +33,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             _appLog = logger.CreateLogger("Section Processor");
         }
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Sections from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
-            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode);
-            var almaSections = _apiAlma.Sections.Extract(almaSchoolCode);
+            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
+            var almaSections = _apiAlma.Sections.Extract(almaSchoolCode,schoolYearId);
             Transform(almaSections, stateSchoolId, almaSessions).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");
             _appLog.LogInformation($"Processed {almaSections.Count} Sections.");

@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
     <PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="AWS.Logger.AspNetCore" Version="3.3.0" />
+    <PackageReference Include="AWSSDK.IdentityManagement" Version="3.7.2.124" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
@@ -25,6 +28,7 @@
     <PackageReference Include="PublicHoliday" Version="2.13.0" />
     <PackageReference Include="RestSharp.Authenticators.Digest" Version="1.1.0" />
     <PackageReference Include="RestSharp.Serializers.Utf8Json" Version="106.15.0" />
+    <PackageReference Include="System.CommandLine" Version="0.3.0-alpha.20070.2" />
   </ItemGroup>
 
   <ItemGroup>

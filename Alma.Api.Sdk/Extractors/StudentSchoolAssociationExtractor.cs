@@ -10,7 +10,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface IStudentSchoolAssociationExtractor
     {
-        List<Enrollment> Extract(string almaSchoolCode);
+        List<Enrollment> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StudentSchoolAssociationExtractor : IStudentSchoolAssociationExtractor
@@ -26,11 +26,11 @@ namespace Alma.Api.Sdk.Extractors
             _studentsEnrollmentsExtractor = studentsEnrollmentsExtractor;
             _studentsExtractor = studentsExtractor;
         }
-        public List<Enrollment> Extract(string almaSchoolCode)
+        public List<Enrollment> Extract(string almaSchoolCode, string schoolYearId = "")
         {
-            var studentEnrollments = _studentsEnrollmentsExtractor.Extract(almaSchoolCode);
+            var studentEnrollments = _studentsEnrollmentsExtractor.Extract(almaSchoolCode,schoolYearId);
 
-            var almaStudents = _studentsExtractor.Extract(almaSchoolCode);
+            var almaStudents = _studentsExtractor.Extract(almaSchoolCode,schoolYearId);
             var studentsSchoolAssociation = new List<Enrollment>();
             var count = almaStudents.response.Count;
             Console.WriteLine($"Processing Enrollments from  {count} students.");

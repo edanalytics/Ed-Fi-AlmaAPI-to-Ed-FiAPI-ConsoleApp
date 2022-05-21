@@ -34,17 +34,17 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         }
 
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Staffs from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // TODO: Change to ALMA once we have access to their API.
             // Extract - Get students from the source API
-            var almaStaffsResponse = _apiAlma.Staff.Extract(almaSchoolCode);
+            var almaStaffsResponse = _apiAlma.Staff.Extract(almaSchoolCode,schoolYearId);
             Transform(almaStaffsResponse.response).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($" ");
             _appLog.LogInformation($"Processed {almaStaffsResponse.response.Count} Staffs.");

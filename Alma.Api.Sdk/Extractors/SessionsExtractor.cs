@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using RestSharp;
@@ -10,7 +10,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface ISessionsExtractor
     {
-        List<Session> Extract(string almaSchoolCode);
+        List<Session> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class SessionsExtractor : ISessionsExtractor
@@ -23,12 +23,12 @@ namespace Alma.Api.Sdk.Extractors
             _client = client.GetRestClient();
             _schoolYearsExtractor = schoolYearsExtractor;
         }
-        public List<Session> Extract(string almaSchoolCode)
+        public List<Session> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
-
             // NOTE: In Alma they have a different way of looking at Terms and Sessions.
             // They are calling these grading-periods.
+            //Alma Api not works with schoolYearId filter
             var request = new RestRequest($"v2/{almaSchoolCode}/grading-periods", DataFormat.Json);
             var response = _client.Get(request);
             //Deserialize JSON data

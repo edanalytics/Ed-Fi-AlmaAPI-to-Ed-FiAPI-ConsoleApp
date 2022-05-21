@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
@@ -39,17 +39,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             _schoolTransformer = schoolTransformer;
             _appLog = logger.CreateLogger("School Processor");
         }
-
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // Extract - Get School from the source API                
-            var srcResponse = _apiAlma.School.Extract(almaSchoolCode);
+            var srcResponse = _apiAlma.School.Extract(almaSchoolCode,schoolYearId);
 
             // Transform & Load - Transform Load all the Alma records into the destination Ed-Fi API
             srcResponse.response.districtId = _settings.DestinationEdFiAPISettings.DestinationLocalEducationAgencyId.ToString();
@@ -76,5 +75,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
                 _appLog.LogInformation($"{ex.Message} Resource: {JsonConvert.SerializeObject(resource)}  :  {almaSchoolCode}/school");
             }
         }
+
+       
     }
 }

@@ -33,16 +33,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
             _courseOfferingTransform = courseOfferingTransform;
             _appLog = logger.CreateLogger("Course Offering Processor");
         }
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Courses offered at School ({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
-            var almaCoursesOffered = _apiAlma.CourseOffering.Extract(almaSchoolCode);
-            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode);
+            var almaCoursesOffered = _apiAlma.CourseOffering.Extract(almaSchoolCode,schoolYearId);
+            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
             // Transform
             Transform(stateSchoolId, almaCoursesOffered, almaSessions).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");

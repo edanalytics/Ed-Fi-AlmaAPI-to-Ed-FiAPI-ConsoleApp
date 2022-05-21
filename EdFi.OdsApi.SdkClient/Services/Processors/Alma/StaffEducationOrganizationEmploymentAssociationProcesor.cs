@@ -31,17 +31,17 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
             _appLog = logger.CreateLogger("Staff Education Organization Employment Association Procesor");
         }
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Staff Education Organization Employment Association from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // TODO: Change to ALMA once we have access to their API.
             // Extract - Get students School from the source API
-            var staffSchool = _apiAlma.StaffSchool.Extract(almaSchoolCode);
+            var staffSchool = _apiAlma.StaffSchool.Extract(almaSchoolCode,schoolYearId);
             Transform(stateSchoolId,staffSchool).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($" ");
             _appLog.LogInformation($"Processed {staffSchool.Count} Staff Education Organization Employment Association.");

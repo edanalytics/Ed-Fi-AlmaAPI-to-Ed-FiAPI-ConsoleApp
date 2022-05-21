@@ -7,7 +7,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface IStudentsEnrollmentsExtractor
     {
-        StudentsEnrollment Extract(string almaSchoolCode);
+        StudentsEnrollment Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StudentsEnrollmentsExtractor : IStudentsEnrollmentsExtractor
@@ -17,7 +17,7 @@ namespace Alma.Api.Sdk.Extractors
         {
             _client = client.GetRestClient();
         }
-        public StudentsEnrollment Extract(string almaSchoolCode)
+        public StudentsEnrollment Extract(string almaSchoolCode, string schoolYearId = "")
         {
             var request = new RestRequest($"v2/{almaSchoolCode}/students/enrollment", DataFormat.Json);
             var response = _client.Get(request);

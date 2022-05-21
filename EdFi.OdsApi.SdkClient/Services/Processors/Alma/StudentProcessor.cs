@@ -34,15 +34,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         }
 
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Students from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
-            var almaStudentResponse = _apiAlma.Students.Extract(almaSchoolCode);
+            var almaStudentResponse = _apiAlma.Students.Extract(almaSchoolCode,schoolYearId);
             Transform(almaStudentResponse.response).ForEach(x => Load(x, almaSchoolCode)); 
             ConsoleHelpers.WriteTextReplacingLastLine($"");
             _appLog.LogInformation($"Processed {almaStudentResponse.response.Count} Students.");

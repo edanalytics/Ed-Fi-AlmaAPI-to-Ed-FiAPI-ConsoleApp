@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using RestSharp;
 using RestSharp.Serializers.Utf8Json;
@@ -11,7 +11,7 @@ namespace Alma.Api.Sdk.Extractors
     public interface ICoursesExtractor
     {
         
-        List<Course> Extract(string almaSchoolCode);
+        List<Course> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class CoursesExtractor : ICoursesExtractor
@@ -31,17 +31,21 @@ namespace Alma.Api.Sdk.Extractors
             _gradeLevelsExtractor = gradeLevelsExtractor;
             _subjectsExtractor = subjectsExtractor;
         }
-        public List<Course> Extract(string almaSchoolCode)
+        public List<Course> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             // Call other extractors we are going to need.
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
             // Note: That for some reason in Alma there are multiple grade levels with the same Id. 
             // Seems to be because of the valid since date but the rest looks identical so we are grouping by the unique Id.
-            var almaGradeLevels = _gradeLevelsExtractor.Extract(almaSchoolCode).GroupBy(x => x.id).Select(g => g.First()).ToList();
-            var almaSubjectss = _subjectsExtractor.Extract(almaSchoolCode);
-            
+            var almaGradeLevels = _gradeLevelsExtractor.Extract(almaSchoolCode, schoolYearId).GroupBy(x => x.id).Select(g => g.First()).ToList();
+            var almaSubjectss = _subjectsExtractor.Extract(almaSchoolCode,schoolYearId);
+            //Exists any filter for School Year????
+            if (!string.IsNullOrEmpty(schoolYearId))
+            {
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+            }
             //Request generation (set resource and response data format)
-            var request = new RestRequest($"v2/{almaSchoolCode}/courses", DataFormat.Json);
+            var request = new RestRequest($"v2/{almaSchoolCode}/courses{schoolYearId}", DataFormat.Json);
             //Synchronous call
             var response = _client.Get(request);
             //Deserialize JSON data

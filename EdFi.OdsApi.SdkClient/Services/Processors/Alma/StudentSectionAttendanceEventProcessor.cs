@@ -26,13 +26,13 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             _exceptionHandler = exceptionHandler;
             _appLog = logger.CreateLogger("Student Section Attendance Event Processor");
         }
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Student Section Attendance Event POST new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             _almaSchoolCode = almaSchoolCode;
             // TODO: Change to ALMA once we have access to their API.

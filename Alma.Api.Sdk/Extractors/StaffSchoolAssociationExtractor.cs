@@ -9,7 +9,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface IStaffSchoolAssociationExtractor
     {        
-        List<Staff> Extract(string almaSchoolCode);
+        List<Staff> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StaffSchoolAssociationExtractor : IStaffSchoolAssociationExtractor
@@ -21,7 +21,7 @@ namespace Alma.Api.Sdk.Extractors
             _staffsExtractor = staffsExtractor;
         }
 
-        public List<Staff> Extract(string almaSchoolCode)
+        public List<Staff> Extract(string almaSchoolCode, string schoolYearId = "")
         {      
             return _staffsExtractor.Extract(almaSchoolCode).response;
         }

@@ -33,15 +33,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         }
 
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Calendars from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
-            var almaResponse = _apiAlma.SchoolCalendarEvents.Extract(almaSchoolCode);
+            var almaResponse = _apiAlma.SchoolCalendarEvents.Extract(almaSchoolCode,schoolYearId);
             var edfiCalendars = Transform(stateSchoolId, almaSchoolCode, almaResponse.response);
             edfiCalendars.ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");

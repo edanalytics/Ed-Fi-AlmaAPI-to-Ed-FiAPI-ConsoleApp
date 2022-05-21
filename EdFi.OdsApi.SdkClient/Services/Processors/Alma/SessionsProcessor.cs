@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors;
+using Alma.Api.Sdk.Extractors;
 using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
@@ -37,17 +37,17 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             _nonInstructionalDays = nonInstructionalDays;
             _appLog = logger.CreateLogger("Section Processor");
         }
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Sessions from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // Extract - Get Sessions from the source API
-            var almaSessionsResponse = _apiAlma.Sessions.Extract(almaSchoolCode);
-            var almaNonInstructionalResponse = _nonInstructionalDays.Extract(almaSchoolCode);
+            var almaSessionsResponse = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
+            var almaNonInstructionalResponse = _nonInstructionalDays.Extract(almaSchoolCode,schoolYearId);
             Transform(stateSchoolId, almaSessionsResponse, almaNonInstructionalResponse).ForEach(x => Load(x,almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");
             _appLog.LogInformation($"Processed {almaSessionsResponse.Count} Sessions.");

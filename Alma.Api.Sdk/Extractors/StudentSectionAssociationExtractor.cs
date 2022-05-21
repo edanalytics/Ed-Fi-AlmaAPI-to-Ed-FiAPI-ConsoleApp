@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using RestSharp;
@@ -15,7 +15,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface IStudentSectionAssociationExtractor
     {
-        List<StudentSectionResponse> Extract(string almaSchoolCode);
+        List<StudentSectionResponse> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StudentSectionAssociationExtractor : IStudentSectionAssociationExtractor
@@ -40,9 +40,9 @@ namespace Alma.Api.Sdk.Extractors
             _schoolYearsExtractor = schoolYearsExtractor;
             _logger = logger;
         }
-        public List<StudentSectionResponse> Extract(string almaSchoolCode)
+        public List<StudentSectionResponse> Extract(string almaSchoolCode, string schoolYearId = "")
         {
-            var almaSections = _sectionsExtractor.Extract(almaSchoolCode);
+            var almaSections = _sectionsExtractor.Extract(almaSchoolCode,schoolYearId);
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
             var almaStudents = _studentsExtractor.Extract(almaSchoolCode);
             // Alma courses could be duplicated, so lets reduce the set by just getting the distinct ones.
@@ -59,7 +59,7 @@ namespace Alma.Api.Sdk.Extractors
                student => {
                    var studentSecion = new StudentSectionResponse();
                    studentSecion.StudentId = student.id;
-                   studentSecion.classes = GetStudentClasses(almaSchoolCode, student.id, almaSections);
+                   studentSecion.classes = GetStudentClasses(almaSchoolCode, student.id, almaSections, schoolYearId);
                    if (studentSecion.classes.Count > 0)
                    {
                        studentSecion.classes.ForEach(clas =>
@@ -85,9 +85,11 @@ namespace Alma.Api.Sdk.Extractors
             return studentsSection.ToList();
         }
 
-        private List<Class> GetStudentClasses(string almaSchoolCode, string StudentId, List<Section> almaSections)
+        private List<Class> GetStudentClasses(string almaSchoolCode, string StudentId, List<Section> almaSections, string schoolYearId)
         {
-            var request = new RestRequest($"v2/{almaSchoolCode}/students/{StudentId}/classes", DataFormat.Json);
+            if (!string.IsNullOrEmpty(schoolYearId))
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+            var request = new RestRequest($"v2/{almaSchoolCode}/students/{StudentId}/classes{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             if (response.StatusCode != HttpStatusCode.OK)
                 return new List<Class>();

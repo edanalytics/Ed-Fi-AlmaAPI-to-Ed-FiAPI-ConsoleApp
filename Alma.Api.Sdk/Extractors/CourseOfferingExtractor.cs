@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using RestSharp;
@@ -12,7 +12,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface ICourseOfferingExtractor
     {
-        List<Course> Extract(string almaSchoolCode);
+        List<Course> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class CourseOfferingExtractor : ICourseOfferingExtractor
@@ -29,17 +29,21 @@ namespace Alma.Api.Sdk.Extractors
             _coursesExtractor = coursesExtractor;
             _logger = logger;
         }
-        public List<Course> Extract(string almaSchoolCode)
+        public List<Course> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             // Alma courses could be duplicated, so lets reduce the set by just getting the distinct ones.
-            var almaCourses = _coursesExtractor.Extract(almaSchoolCode)
+            var almaCourses = _coursesExtractor.Extract(almaSchoolCode, schoolYearId)
                                 .GroupBy(x => new { x.schoolYearId, x.id})                               
                                 .Select(g=>g.First())
                                 .ToList();
-
+            //Exists any filter for School Year????
+            if (!string.IsNullOrEmpty(schoolYearId))
+            {
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+            }
             // We are getting the Classes for alma and deriving the courses from there.
             // This way we know for a fact that the course is being offered.
-            var request = new RestRequest($"v2/{almaSchoolCode}/classes", DataFormat.Json);
+            var request = new RestRequest($"v2/{almaSchoolCode}/classes{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             var classesResponse = new Utf8JsonSerializer().Deserialize<SectionsResponse>(response);
             

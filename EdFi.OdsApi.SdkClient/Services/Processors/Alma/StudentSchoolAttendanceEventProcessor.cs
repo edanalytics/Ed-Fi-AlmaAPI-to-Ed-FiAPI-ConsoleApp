@@ -39,19 +39,19 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         }
 
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Student School Attendance Event from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // Extract - Get students School from the source API
-            //var staffResponse = _apiAlma.Staff.Extract(almaSchoolCode);
+            //var staffResponse = _apiAlma.Staff.Extract(almaSchoolCode,schoolYearId);
             //get sessions to relate attendance to a session
-            var almaStudentAttendanceResponse = _apiAlma.Attendance.Extract(almaSchoolCode);
-            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode);
+            var almaStudentAttendanceResponse = _apiAlma.Attendance.Extract(almaSchoolCode,schoolYearId);
+            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
             var AttendancetoRequest = Transform(stateSchoolId, almaStudentAttendanceResponse, almaSessions);
             AttendancetoRequest.ForEach(x => Load(x, almaSchoolCode));
 

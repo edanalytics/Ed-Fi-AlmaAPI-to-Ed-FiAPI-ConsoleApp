@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using RestSharp;
@@ -14,8 +14,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface IStudentAttendanceExtractor
     {
-        
-        List<Attendance> Extract(string almaSchoolCode);
+        List<Attendance> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StudentAttendanceExtractor : IStudentAttendanceExtractor
@@ -35,10 +34,14 @@ namespace Alma.Api.Sdk.Extractors
             _schoolYearsExtractor = schoolYearsExtractor;
             _studentsExtractor = studentsExtractor;
         }
-        public List<Attendance> Extract(string almaSchoolCode)
+        public List<Attendance> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
-            var almaStudents = _studentsExtractor.Extract(almaSchoolCode);
+
+            if (!string.IsNullOrEmpty(schoolYearId))
+                almaSchoolYears = almaSchoolYears.Where(x => x.id == schoolYearId).ToList();
+
+            var almaStudents = _studentsExtractor.Extract(almaSchoolCode,schoolYearId);
             var concurrentAttendanceList = new ConcurrentBag<Attendance>();
             var studentIndex = 0;
             var stopWatch = Stopwatch.StartNew();
@@ -58,10 +61,11 @@ namespace Alma.Api.Sdk.Extractors
                    }
                }
             );
-            if (concurrentAttendanceList.Count > 0)
+            if (_attendanceForbiden.Count > 0)
             {
                 Console.WriteLine($"  *********** Executing the Forbiden Attendance.... wait a moment***************");
-                var attendance = GetAttendanceForbiden(concurrentAttendanceList);
+                var tempAttendances = new ConcurrentBag<Attendance>();
+                var attendance = GetAttendanceForbiden(tempAttendances);
                 if (attendance.Count > 0)
                     attendance.ForEach(a => concurrentAttendanceList.Add(a));
             }

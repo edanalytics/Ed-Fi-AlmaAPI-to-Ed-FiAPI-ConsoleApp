@@ -13,7 +13,7 @@ namespace Alma.Api.Sdk.Extractors
     public interface IStudentsExtractor
     {
         
-        StudentsResponse Extract(string almaSchoolCode);
+        StudentsResponse Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StudentsExtractor : IStudentsExtractor
@@ -25,7 +25,7 @@ namespace Alma.Api.Sdk.Extractors
             _client = client.GetRestClient();
         }
 
-        public StudentsResponse Extract(string almaSchoolCode)
+        public StudentsResponse Extract(string almaSchoolCode, string schoolYearId = "")
         {
             //Request generation (set resource and response data format)
             var request = new RestRequest($"v2/{almaSchoolCode}/students", DataFormat.Json);

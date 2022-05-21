@@ -15,7 +15,7 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface IStaffSectionAssociationExtractor
     {
-        List<StaffSection> Extract(string almaSchoolCode);
+        List<StaffSection> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class StaffSectionAssociationExtractor : IStaffSectionAssociationExtractor
@@ -37,14 +37,14 @@ namespace Alma.Api.Sdk.Extractors
             _staffsExtractor = staffsExtractor;
             _logger = logger;
         }
-        public List<StaffSection> Extract(string almaSchoolCode)
+        public List<StaffSection> Extract(string almaSchoolCode, string schoolYearId = "")
         {
-            var almaSections = _sectionsExtractor.Extract(almaSchoolCode);
+            var almaSections = _sectionsExtractor.Extract(almaSchoolCode,schoolYearId);
             var almaCourses = _coursesExtractor.Extract(almaSchoolCode)
                               .GroupBy(x => new { x.schoolYearId, x.id })
                               .Select(g => g.First())
                               .ToList();
-            var staffs = _staffsExtractor.Extract(almaSchoolCode);
+            var staffs = _staffsExtractor.Extract(almaSchoolCode,schoolYearId);
             var staffsSection = new ConcurrentBag<StaffSection>();
             var studentIndex = 0;
             var stopWatch = Stopwatch.StartNew();

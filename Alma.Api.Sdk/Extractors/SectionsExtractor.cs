@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using RestSharp;
@@ -12,7 +12,7 @@ namespace Alma.Api.Sdk.Extractors
     public interface ISectionsExtractor
     {
         
-        List<Section> Extract(string almaSchoolCode);
+        List<Section> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class SectionsExtractor : ISectionsExtractor
@@ -33,15 +33,18 @@ namespace Alma.Api.Sdk.Extractors
             _logger = logger;
         }
 
-        public List<Section> Extract(string almaSchoolCode)
+        public List<Section> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
             var almaCourses = _coursesExtractor.Extract(almaSchoolCode)
                                 .GroupBy(x => new { x.schoolYearId, x.id })
                                 .Select(g => g.First())
                                 .ToList();
-
-            var request = new RestRequest($"v2/{almaSchoolCode}/classes", DataFormat.Json);
+            if (!string.IsNullOrEmpty(schoolYearId))
+            {
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+            }
+            var request = new RestRequest($"v2/{almaSchoolCode}/classes{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             var classesResponse = new Utf8JsonSerializer().Deserialize<SectionsResponse>(response);
 

@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using RestSharp;
 using RestSharp.Serializers.Utf8Json;
@@ -9,8 +9,8 @@ namespace Alma.Api.Sdk.Extractors
 {
     public interface ISchoolExtractor
     {
-        
-        Response<School> Extract(string almaSchoolCode);
+
+        Response<School> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class SchoolExtractor : ISchoolExtractor
@@ -20,7 +20,7 @@ namespace Alma.Api.Sdk.Extractors
         {
             _client = client.GetRestClient();
         }
-        public Response<School> Extract(string almaSchoolCode)
+        public Response<School> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             //Request generation (set resource and response data format)
             var request = new RestRequest($"v2/{almaSchoolCode}/school", DataFormat.Json);

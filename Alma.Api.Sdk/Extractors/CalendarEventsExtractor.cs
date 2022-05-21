@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using RestSharp;
 using RestSharp.Serializers.Utf8Json;
@@ -10,7 +10,7 @@ namespace Alma.Api.Sdk.Extractors
     public interface ICalendarEventsExtractor
     {
         
-        CalendarEventsResponse Extract(string almaSchoolCode);
+        CalendarEventsResponse Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class CalendarEventsExtractor : ICalendarEventsExtractor
@@ -27,12 +27,14 @@ namespace Alma.Api.Sdk.Extractors
             _calendarEventTypesExtractor = calendarEventTypesExtractor;
             _schoolYearsExtractor = schoolYearsExtractor;
         }
-        public CalendarEventsResponse Extract(string almaSchoolCode)
+        public CalendarEventsResponse Extract(string almaSchoolCode, string schoolYearId = "")
         {
+            if (!string.IsNullOrEmpty(schoolYearId))
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
             var calendarEventTypes = _calendarEventTypesExtractor.Extract(almaSchoolCode);
-
-            var request = new RestRequest($"v2/{almaSchoolCode}/school/calendar/events", DataFormat.Json);
+            var request = new RestRequest($"v2/{almaSchoolCode}/school/calendar/events{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             var calendarResponse = new Utf8JsonSerializer().Deserialize<CalendarEventsResponse>(response);
 

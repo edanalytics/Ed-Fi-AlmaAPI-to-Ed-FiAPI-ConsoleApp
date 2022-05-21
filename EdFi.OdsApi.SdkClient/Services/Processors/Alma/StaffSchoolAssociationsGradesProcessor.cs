@@ -34,18 +34,18 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
             _appLog = logger.CreateLogger("Staff School Associations Grades Processor");
         }
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing  Staffs  grades from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // TODO: Change to ALMA once we have access to their API.
             // Extract - Get students School from the source API
-            var staffSchool = _apiAlma.StaffSection.Extract(almaSchoolCode);
-            var userRoles = _apiAlma.UserRoles.Extract(almaSchoolCode);
+            var staffSchool = _apiAlma.StaffSection.Extract(almaSchoolCode,schoolYearId);
+            var userRoles = _apiAlma.UserRoles.Extract(almaSchoolCode,schoolYearId);
 
             Transform(stateSchoolId, staffSchool, almaSchoolCode, userRoles).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($"");

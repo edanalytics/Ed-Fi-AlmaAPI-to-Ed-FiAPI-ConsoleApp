@@ -36,17 +36,17 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
 
 
 
-        public void ExecuteETL(string almaSchoolCode, int stateSchoolId)
+        public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Student Section Association from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId);
+            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
         {
             // Extract - Get students Section Association from the source API
-            var almaStudentSectionResponse = _apiAlma.StudentSection.Extract(almaSchoolCode);
-            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode);
+            var almaStudentSectionResponse = _apiAlma.StudentSection.Extract(almaSchoolCode,schoolYearId);
+            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
             Transform(almaStudentSectionResponse, stateSchoolId, almaSessions).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($"");
             _appLog.LogInformation($"Processed {almaStudentSectionResponse.Count} Student Sections Association rows .");

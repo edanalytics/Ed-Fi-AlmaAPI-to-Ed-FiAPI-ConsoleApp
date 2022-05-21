@@ -9,7 +9,7 @@ namespace Alma.Api.Sdk.Extractors
     public interface IUserRolesExtractor
     {
         
-        List<UserRole> Extract(string almaSchoolCode);
+        List<UserRole> Extract(string almaSchoolCode, string schoolYearId = "");
     }
 
     public class UserRolesExtractor : IUserRolesExtractor
@@ -19,7 +19,7 @@ namespace Alma.Api.Sdk.Extractors
         {
             _client = client.GetRestClient();
         }
-        public List<UserRole> Extract(string almaSchoolCode)
+        public List<UserRole> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             var request = new RestRequest($"v2/{almaSchoolCode}/user-roles", DataFormat.Json);
             var response = _client.Get(request);
