@@ -36,14 +36,14 @@ namespace EdFi.AlmaToEdFi.Cmd
                 //to the latest unless we explicitly request it. Some hosting environments will not allow older versions
                 //of TLS, and thus calls can fail without this extra configuration.
                 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
-                var config = GetConfiguration(awsKey, awsSecret, awsRegion).Build();
+                var config = GetConfiguration(awsKey.Trim(), awsSecret.Trim(), awsRegion).Build();
                 var settings = config.GetSection("Settings").Get<AppSettings>();
-                if (string.IsNullOrEmpty(awsKey) ||  string.IsNullOrEmpty(awsSecret))
+                if (string.IsNullOrEmpty(awsKey.Trim()) ||  string.IsNullOrEmpty(awsSecret.Trim()))
                 {
                     settings.AwsConfiguration.AWSAccessKey = "";
                     settings.AwsConfiguration.AWSSecretKey = "";
                 }
-                if (string.IsNullOrEmpty(awsLoggingGroupName))
+                if (string.IsNullOrEmpty(awsLoggingGroupName.Trim()))
                 {
                     settings.AwsConfiguration.AWSLoggingGroupName = "";
                 }
