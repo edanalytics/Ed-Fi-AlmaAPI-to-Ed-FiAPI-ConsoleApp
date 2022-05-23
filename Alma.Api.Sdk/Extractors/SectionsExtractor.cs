@@ -41,9 +41,7 @@ namespace Alma.Api.Sdk.Extractors
                                 .Select(g => g.First())
                                 .ToList();
             if (!string.IsNullOrEmpty(schoolYearId))
-            {
                 schoolYearId = $"?schoolYearId={schoolYearId}";
-            }
             var request = new RestRequest($"v2/{almaSchoolCode}/classes{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             var classesResponse = new Utf8JsonSerializer().Deserialize<SectionsResponse>(response);

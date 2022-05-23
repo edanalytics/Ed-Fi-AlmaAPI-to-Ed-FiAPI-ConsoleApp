@@ -41,9 +41,7 @@ namespace Alma.Api.Sdk.Extractors
             var almaSubjectss = _subjectsExtractor.Extract(almaSchoolCode,schoolYearId);
             //Exists any filter for School Year????
             if (!string.IsNullOrEmpty(schoolYearId))
-            {
                 schoolYearId = $"?schoolYearId={schoolYearId}";
-            }
             //Request generation (set resource and response data format)
             var request = new RestRequest($"v2/{almaSchoolCode}/courses{schoolYearId}", DataFormat.Json);
             //Synchronous call

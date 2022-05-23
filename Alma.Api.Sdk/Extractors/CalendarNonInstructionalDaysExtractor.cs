@@ -22,9 +22,7 @@ namespace Alma.Api.Sdk.Extractors
         public List<CalendarEvent> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             if (!string.IsNullOrEmpty(schoolYearId))
-            {
                 schoolYearId = $"?schoolYearId={schoolYearId}";
-            }
             //Request generation (set resource and response data format)
             var request = new RestRequest($"v2/{almaSchoolCode}/school/calendar/events{schoolYearId}", DataFormat.Json);
             //Synchronous call

@@ -22,9 +22,7 @@ namespace Alma.Api.Sdk.Extractors
         public List<GradeLevel> Extract(string almaSchoolCode, string schoolYearId = "")
         {   //Exists any filter for School Year????
             if (!string.IsNullOrEmpty(schoolYearId))
-            {
                 schoolYearId = $"?schoolYearId={schoolYearId}";
-            }
             var request = new RestRequest($"v2/{almaSchoolCode}/grade-levels{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             //Deserialize JSON data
