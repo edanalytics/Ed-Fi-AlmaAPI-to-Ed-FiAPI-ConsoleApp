@@ -35,6 +35,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
 
         private static void RegisterApplicationDependencies(IServiceCollection container, IConfiguration config, AppSettings appSettings)
         {
+            //Remove this 2 lines after finish the aws improvements
+            appSettings.AwsConfiguration.AWSAccessKey = "";
+            appSettings.AwsConfiguration.AWSSecretKey = "";
             // Configure the Logger
             container.AddLogging(builder =>
             {
@@ -56,7 +59,12 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
                     builder.AddFile(logPath, true);
                 }
             });
-
+            if (!string.IsNullOrEmpty(appSettings.SourceAlmaAPISettings.SchoolYearFilter))
+            {
+                // if SchoolYearFilter comes from comand line parameter we overwrite the value
+                config.GetSection("Settings:SourceAlmaAPISettings:SchoolYearFilter").Value =
+                appSettings.SourceAlmaAPISettings.SchoolYearFilter;
+            }
             // Register the IOptions for app settings.
             container.Configure<AppSettings>(config.GetSection("Settings"));
 

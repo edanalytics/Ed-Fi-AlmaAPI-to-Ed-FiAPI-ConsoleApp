@@ -23,7 +23,7 @@ namespace EdFi.AlmaToEdFi.Cmd
         private readonly IEnumerable<IProcessor> _processors;
         private readonly AppSettings _appSettings;
         private readonly ISchoolYearsExtractor _schoolYearsExtractor;
-        public App(IOptions<AppSettings> settings, ILogger<App> logger, IAlmaApi almaApi, IEnumerable<IProcessor> processors, ISchoolYearsExtractor schoolYearsExtractor)
+        public App(IOptionsSnapshot<AppSettings> settings, ILogger<App> logger, IAlmaApi almaApi, IEnumerable<IProcessor> processors, ISchoolYearsExtractor schoolYearsExtractor)
         {
             _appSettings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -115,6 +115,7 @@ namespace EdFi.AlmaToEdFi.Cmd
                                         {
                                             id = m.Key
                                         }).ToList();
+                _logger.LogInformation($" *********** {school.id.ToUpper()} Processing records for the {schoolYearFilter } School Year *************");
                 foreach (var sYear in schoolYearItems)
                 {
                     RunProcessors(school, sYear.id);
