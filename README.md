@@ -6,120 +6,24 @@ This .Net Core console application pulls from the Alma API and inserts into the 
 1. Download the code: git clone git@github.com:Ed-Fi-Exchange-OSS/Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp.git
 2. Compile the application and publish it.
 3. Edit the appsettings.json file to include your Source and Destination APIs information.
-4. Run the application without Aws by executing the EdFi.AlmaToEdFi.Cmd.exe
-5. Run the application with Aws:
-
-   5.1 ******With Aws Parameter Store******
+4. Run the application by executing the EdFi.AlmaToEdFi.Cmd.exe
 	
-	Open a Windows console  and execute the command: `start /b "" "your EdFi.AlmaToEdFi.Cmd.exe path"  --awsKey yourAwsKey --awsSecret yourAwsSecret --awsRegion 		yourAwsRegion`
+### Filter EndPoints by School Year
 
-   5.2 ***With Aws Parameter Store and Aws Cloud Watch Log***
-		
-	Open a Windows console  and execute the command:`start /b "" "your EdFi.AlmaToEdFi.Cmd.exe path"  --awsKey yourAwsKey --awsSecret yourAwsSecret --awsRegion 		yourAwsRegion  --awsLoggingGroupName yourLoggingGroupName`
-  
-     ***Or with PowerShell***
-     
-     
+If we need to get the data filtered by School Year, set the value you want to filter to the `SchoolYearFilter` property (e.g. 2020-2021) in the appsettings.json 
+
+###### Or with PowerShell
 ```powershell 
- #Change your paths
+#Change your paths
  cd  "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\"
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
- #Set your parameters, Only if you want to load Configured parameters from AWS, Or Store logs in AwsCloudWatch
+ #Set your parameter
  $params = @(
-    "--awsKey", " ",
-    "--awsSecret", " ",
-    "--awsRegion", " ",
-    "--awsLoggingGroupName", " "
+    "--schoolYearFilter", "2020-2021"
 )
 Write-host -ForegroundColor Cyan  $apiLoaderExe $params
-&  $almaToEdFiExe $params
+ &  $almaToEdFiExe $params
 ```
-***Note***
-
-	The parameters --awsKey, --awsSecret and --awsRegion are requiered for Aws Parameter Store
-	
-	The parameters --awsKey, --awsSecret --awsRegion and --awsLoggingGroupName are requiered for Aws CloudWatch
-	*Aws Cloud Watch Should be Enabled in your Amazon Account and a Group Name configured.
-	
-### Filter EndPoints by SchoolYearId
-
-If we need to get the data filtered by SchoolYear, Set the SchoolYear section in the appsettings.json. StartDate && EndDate Should be valid dates with the format `YYYY-MM-DD` ,emty if dont want to filter by SchoolYearId
-
-### AWS Parameter Store and AWS CloudWatch
-
-#### Loading From AWS Parameter Store
-
-Instead to keep your config information into appsettings.json file, now you can keep them in AWS Parameter Store.
-
-First, we are goint to add our  appsettings values to AWS Parameter Store
-
-LogIn to your AWS Console, click `Services` then `Management & Governance`, find `Systems Manager` then click on `Parameter Store` and then click on `Create parameter`.
-
-Now we are going to configure the next fields : `Name` and `Value`, for this example lets focus on how to configure StartDate and EndDate from SchoolYear of our appsettings.json
-
-Following the appsettings.json structure:
-```
-{
-
-    "Settings": {
-        "AwsConfiguration": {
-            "AWSAccessKey": "",
-            "AWSSecretKey": "",
-            "AWSRegion": "",
-            "AWSLoggingGroupName": "AlmaApi"
-        },
-
-        "SourceAlmaAPISettings": {
-            "Url": "",
-            "Key": "",
-            "Secret": "",
-            "District": "",
-            "SchoolYear": {
-                "Comment": "StartDate && EndDate Should follow the format YYYY-MM-DD,emty if dont want to filter by SchoolYearId",
-                "StartDate": "",
-                "EndDate": ""
-            }
-        },
-
-        "DestinationEdFiAPISettings": {
-            "Comment": "This should be your destination Ed-Fi ODS/API",
-            "Url": "",
-            "Key": "",
-            "Secret": "",
-            "DestinationLocalEducationAgencyId": 255901
-        }
-    }
-}
-```
-**For StartDate**.
-
-In the Name field, type : `AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/StartDate`
-
-In the Value field, type a date ( e.g. **2020-08-24**) , the date should be a valid date.
-
-**For EndDate**.
-
-In the Name field,type : `AlmaApi/Settings/SourceAlmaAPISettings/SchoolYear/EndDate`
-
-In the Value field, type a date ( e.g.  **2020-10-15** ), the date should be a valid date.
-
- `AlmaApi/` is a prefix and is important to use that name to the aplication works, if you want to change the prefix name you need to change it in the application code as well;
- 
-### Change Systems Manager path (Prefix).
-```csharp
-1) Go to the Program.cs of the application.
-	
-2) Find the line with the code
-
-                configBuilder.AddSystemsManager("/AlmaApi",
-                                                  new AWSOptions
-                                                  {
-                                                      Region = RegionEndpoint.GetBySystemName(awsRegion),
-                                                      Credentials = new BasicAWSCredentials(awsKey, awsSecret)
-                                                  }, TimeSpan.FromSeconds(20));
-3)  Set your best prefix name.
-```
-
 
 ### Support
 For any support please create a ticket in the Ed-Fi tracker ticketing system: https://tracker.ed-fi.org/ and make sure you select the "Ed-Fi Support (EDFI)" project. 
