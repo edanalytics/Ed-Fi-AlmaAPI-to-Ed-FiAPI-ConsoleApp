@@ -1,5 +1,6 @@
 using Alma.Api.Sdk.Extractors;
 using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.Processors;
 using EdFi.AlmaToEdFi.Common;
@@ -60,33 +61,21 @@ namespace EdFi.AlmaToEdFi.Cmd
                 //17-StaffSectionProcessor
                 //18-StaffSchoolAssociationsProcessor
                 //19-StaffSectionAssociationProcessor
-                
-            string schoolYearId = "";
             var overallStopWatch = Stopwatch.StartNew();
             var startTime = DateTime.Now;
             foreach (var school in almaSchools.response.schools)
             {
                 // _processors.OrderBy(x => x.ExecutionOrder).ToList().ForEach(x => x.ExecuteETL(school.id));
-                // Checking if we need to filter endpoints by SchoolYearId
-                schoolYearId = GetSchoolYearId(_appSettings, school.id);
-                if (schoolYearId == "-1")
-                    continue;
-                foreach (var processor in _processors.OrderBy(x => x.ExecutionOrder))
+                // Checking if we need to filter endpoints by SchoolYear
+                if (string.IsNullOrEmpty(_appSettings.SourceAlmaAPISettings.SchoolYearFilter))
                 {
-                    ConsoleHelpers.WriteTitle($"Executing - {processor.GetType().Name}");
-                    // Lets measure times for future performace enhancements where needed.
-                    var stopWatch = Stopwatch.StartNew();
-                    processor.ExecuteETL(school.id, Convert.ToInt32(school.stateId), schoolYearId);
-                    stopWatch.Stop();
-                    _logger.LogInformation($"{processor.GetType()} took {stopWatch.ElapsedMilliseconds} ms. \r\n");                    
+                    RunProcessors(school,string.Empty);
                 }
-
-                // Test a single one.
-                //var test1 = _processors.SingleOrDefault(x => x.GetType() == typeof(CourseProcessor));
-                //test1.ExecuteETL(school.id);
+                else
+                {
+                    ProcessorWithSchoolYear(school);
+                }
             }
-
-
             // Process all in dependency/execution order
             //_processors.OrderBy(x => x.ExecutionOrder).ToList().ForEach(x => x.ExecuteETL());
             overallStopWatch.Stop();
@@ -97,31 +86,41 @@ namespace EdFi.AlmaToEdFi.Cmd
             await Task.CompletedTask;
         }
 
-        private string GetSchoolYearId(AppSettings appSettings,string schoolId)
+        private void RunProcessors(School school, string schoolYearId)
         {
-            string schoolYearId = "";
-            var startDate = appSettings.SourceAlmaAPISettings.SchoolYear.StartDate;
-            var endDate = appSettings.SourceAlmaAPISettings.SchoolYear.EndDate;
-            // Exists StartDate && EndDate in the configuration
-            if ((startDate > Convert.ToDateTime("01/01/0001")) &&
-                (endDate > Convert.ToDateTime("01/01/0001")))
+            foreach (var processor in _processors.OrderBy(x => x.ExecutionOrder))
             {
-                var schoolYear = _schoolYearsExtractor.Extract(schoolId).FirstOrDefault(sY =>
-                                                                                            sY.startDate >= startDate
-                                                                                            && sY.endDate <= endDate);
-                if (schoolYear == null)
-                {
-                    _logger.LogInformation($"");
-                    _logger.LogInformation($" *********** {schoolId.ToUpper()} does not have any School Year Configured ( {startDate.ToShortDateString() } - { endDate.ToShortDateString()} )  *************");
-                    _logger.LogInformation($"");
-                    schoolYearId ="-1";
-                }
-                else
-                {
-                    schoolYearId = schoolYear.id;
-                }
+                ConsoleHelpers.WriteTitle($"Executing - {processor.GetType().Name}");
+                processor.ExecuteETL(school.id, Convert.ToInt32(school.stateId), schoolYearId);
+                // Test a single one.
+                //var test1 = _processors.SingleOrDefault(x => x.GetType() == typeof(CourseProcessor));
+                //test1.ExecuteETL(school.id);
             }
-            return schoolYearId;
+        }
+
+        private void ProcessorWithSchoolYear(School school)
+        {
+            var schoolYearFilter = _appSettings.SourceAlmaAPISettings.SchoolYearFilter;
+            var schoolYear = _schoolYearsExtractor.Extract(school.id).Where(sY => sY.name == schoolYearFilter).ToList();
+            if (schoolYear.Count==0)
+            {
+                _logger.LogInformation($"");
+                _logger.LogInformation($" *********** {school.id.ToUpper()} does not have any Record with the School Year( {schoolYearFilter }  )  *************");
+                _logger.LogInformation($"");
+            }
+            else
+            {
+               var schoolYearItems = schoolYear.GroupBy(sy => sy.id)
+                                        .Select(m => new Alma.Api.Sdk.Models.SchoolYear
+                                        {
+                                            id = m.Key
+                                        }).ToList();
+                foreach (var sYear in schoolYearItems)
+                {
+                    RunProcessors(school, sYear.id);
+                }
+
+            }
         }
 
     }

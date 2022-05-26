@@ -32,20 +32,13 @@ namespace EdFi.AlmaToEdFi.Common
     public class AlmaApiSettings : ApiConfig
     {
         public string District { get; set; }
-        public SchoolYear SchoolYear { get; set; }
+        public string SchoolYearFilter { get; set; }
     }
 
     public class EdFiApiSettings : ApiConfig
     {
         public int DestinationLocalEducationAgencyId { get; set; }
     }
-
-    public class SchoolYear
-    {
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-    }
-
 
     public class LogLevel
     {

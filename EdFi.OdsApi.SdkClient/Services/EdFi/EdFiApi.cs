@@ -1,4 +1,4 @@
-﻿using EdFi.AlmaToEdFi.Common;
+using EdFi.AlmaToEdFi.Common;
 using EdFi.OdsApi.Sdk.Api.Resources;
 using EdFi.OdsApi.Sdk.Client;
 using Microsoft.Extensions.Options;
@@ -55,8 +55,8 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             //Oauth configuration
             //var apiBaseUrl = "https://desktop-da95dja/WebApi/data/v3/ed-fi/";
             //var oauthUrl = "https://api.ed-fi.org/v5.3/api";
-            //var clientKey = "RvcohKz9zHI4";
-            //var clientSecret = "E1iEFusaNf81xzCxwHfbolkC";
+            //var clientKey = "";
+            //var clientSecret = "";
 
             // TokenRetriever makes the oauth calls. It has RestSharp dependency, install via NuGet
             var tokenRetriever = new TokenRetriever(_settings.DestinationEdFiAPISettings.Url, 

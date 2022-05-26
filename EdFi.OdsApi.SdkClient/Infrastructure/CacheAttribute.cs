@@ -1,4 +1,4 @@
-﻿using AspectCore.DynamicProxy;
+using AspectCore.DynamicProxy;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
@@ -55,7 +55,11 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
             var paramsSent = "(";
             foreach (var p in context.Parameters)
             {
-                paramsSent += p + ",";
+                if (!string.IsNullOrEmpty(p.ToString()))
+                {
+                    paramsSent += p + ",";
+                }
+               
             }
             if (paramsSent.EndsWith(","))
             {

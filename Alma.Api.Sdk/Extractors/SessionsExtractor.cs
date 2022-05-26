@@ -28,11 +28,17 @@ namespace Alma.Api.Sdk.Extractors
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
             // NOTE: In Alma they have a different way of looking at Terms and Sessions.
             // They are calling these grading-periods.
+
             //Alma Api not works with schoolYearId filter
+            //if (!string.IsNullOrEmpty(schoolYearId))
+            //    schoolYearId = $"?schoolYearId={schoolYearId}";
             var request = new RestRequest($"v2/{almaSchoolCode}/grading-periods", DataFormat.Json);
             var response = _client.Get(request);
             //Deserialize JSON data
             var schoolGradingPeriods = new Utf8JsonSerializer().Deserialize<SessionsResponse>(response);
+            if (!string.IsNullOrEmpty(schoolYearId))
+                schoolGradingPeriods.response = schoolGradingPeriods.response.Where(gp=>gp.schoolYearId== schoolYearId).ToList();
+
             schoolGradingPeriods.response.ForEach(gP =>
             {
                 gP.SchoolYear = almaSchoolYears.SingleOrDefault(x => x.id == gP.schoolYearId);
