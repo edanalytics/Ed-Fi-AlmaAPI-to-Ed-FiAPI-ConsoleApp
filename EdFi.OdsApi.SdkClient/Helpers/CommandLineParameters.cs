@@ -2,7 +2,9 @@ using EdFi.AlmaToEdFi.Common;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace EdFi.AlmaToEdFi.Cmd.Helpers
 {
@@ -14,27 +16,68 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
             var schoolYearFilter = new Option<string>(
                 "--schoolYearFilter",
                 description: "if you want to filter by School Year , pass the value (e.g. 2019-2020)", getDefaultValue: () => "");
-            schoolYearFilter.Required = false;
+                schoolYearFilter.AddValidator(r =>
+                {
+                    string pattern = @"^\d{4}(-\d{4})$";
+                    var value = r.GetValueOrDefault<string>();
+                    if (!string.IsNullOrEmpty(value))
+                        if (!Regex.IsMatch(value, pattern, RegexOptions.IgnoreCase))
+                            return $"{r.Token.Value} should be something like  2020-2021";
+                    return null;
+                });
+             
 
             var awsKey = new Option<string>(
-               "--awsKey",
-               description: "Your Aws Key", getDefaultValue: () => "");
-            awsKey.Required = false;
+                        "--awsKey",
+                        description: "Your Aws Key", getDefaultValue: () => "");
+                        awsKey.Required = false;
+                        awsKey.AddValidator(r =>
+                        {
+                            var value = r.GetValueOrDefault<string>();
+                            if (!string.IsNullOrEmpty(value))
+                                if (value.ToLower().Contains("your_aws_key") ||  value.Contains("<") ||  value.Contains(">"))
+                                    return $"{value} is not a valid Key";
+                            return null;
+                        });
 
             var awsSecret = new Option<string>(
-               "--awsSecret",
-                description: "your Aws Secret", getDefaultValue: () => "");
-            awsSecret.Required = false;
+                        "--awsSecret",
+                        description: "your Aws Secret", getDefaultValue: () => "");
+                        awsSecret.Required = false;
+                        awsSecret.AddValidator(r =>
+                        {
+                            var value = r.GetValueOrDefault<string>();
+                            if (!string.IsNullOrEmpty(value))
+                                if (value.ToLower().Contains("your_aws_secret") || value.Contains("<") || value.Contains(">"))
+                                    return $"{value} is not a valid Secret";
+                            return null;
+                        });
 
             var awsRegion = new Option<string>(
                 "--awsRegion",
                 description: "your Aws Region (e.g. us-east-1)", getDefaultValue: () => "");
-            awsRegion.Required = false;
+                awsRegion.Required = false;
+                awsRegion.AddValidator(r =>
+                {
+                    var value = r.GetValueOrDefault<string>();
+                    if (!string.IsNullOrEmpty(value))
+                        if (value.ToLower().Contains("your_aws_region") || value.Contains("<") || value.Contains(">"))
+                            return $"{value} is not a valid Region";
+                    return null;
+                });
 
             var awsLoggingGroupName = new Option<string>(
                 "--awsLoggingGroupName",
                 description: "Each log stream has to belong to one log group (e.g. AlmaApi)", getDefaultValue: () => "");
-            awsLoggingGroupName.Required = false;
+                awsLoggingGroupName.Required = false;
+                awsLoggingGroupName.AddValidator(r =>
+                    {
+                        var value = r.GetValueOrDefault<string>();
+                        if (!string.IsNullOrEmpty(value))
+                            if (value.ToLower().Contains("your_log_group") || value.Contains("<") || value.Contains(">"))
+                                return $"{value} is not a valid Log Group";
+                        return null;
+                    });
 
             // Add the options to a root command:
             var rootCommand = new RootCommand
