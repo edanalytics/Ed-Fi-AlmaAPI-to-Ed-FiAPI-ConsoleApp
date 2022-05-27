@@ -21,12 +21,12 @@ If we need to get the data filtered by School Year, set the value you want to fi
  $params = @(
     "--schoolYearFilter", "2020-2021"
 )
-Write-host -ForegroundColor Cyan  $apiLoaderExe $params
+Write-host -ForegroundColor Cyan  $almaToEdFiExe $params
  &  $almaToEdFiExe $params
  
  
 ```
-![image](https://user-images.githubusercontent.com/85459544/170789440-f03687c7-593a-4294-b5e9-ae43ce043caa.png)
+![image](https://user-images.githubusercontent.com/85459544/170791007-47579716-6033-4732-be8d-e243bce7fea9.png)
 
 ### AWS Parameter Store
 
@@ -83,7 +83,7 @@ In the Value field, type your filter string ( e.g. ***2020-2021***).
     "--awsSecret", "",
     "--awsRegion", ""
 )
-Write-host -ForegroundColor Cyan  $apiLoaderExe $params
+Write-host -ForegroundColor Cyan  $almaToEdFiExe $params
  &  $almaToEdFiExe $params
  
 ```
@@ -110,7 +110,7 @@ If you already have CloudWatch enabled for logs, run the next Script with PowerS
     "--awsRegion", "",
     "--awsLoggingGroupName", ""
 )
-Write-host -ForegroundColor Cyan  $apiLoaderExe $params
+Write-host -ForegroundColor Cyan  $almaToEdFiExe $params
  &  $almaToEdFiExe $params
  
 ```
