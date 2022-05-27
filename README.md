@@ -19,7 +19,7 @@ If we need to get the data filtered by School Year, set the value you want to fi
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
  #Set your parameter (The parameter is requiered)
  $params = @(
-    "--schoolYearFilter", "2020-2021"
+    "--schoolYearFilter", "<School_Year_Filter>"  #(e.g. 2020-2021)
 )
 Write-host -ForegroundColor Cyan  $almaToEdFiExe $params
  &  $almaToEdFiExe $params
@@ -79,9 +79,9 @@ In the Value field, type your filter string ( e.g. ***2020-2021***).
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
  #Set your parameters(All parameters are requiered)
  $params = @(
-    "--awsKey", "",
-    "--awsSecret", "",
-    "--awsRegion", ""
+    "--awsKey","<Your_Aws_Key>",
+    "--awsSecret", "<Your_Aws_Secret>",
+    "--awsRegion", "<Your_Aws_Region>" # (e.g. us-east-1)
 )
 Write-host -ForegroundColor Cyan  $almaToEdFiExe $params
  &  $almaToEdFiExe $params
@@ -105,10 +105,10 @@ If you already have CloudWatch enabled for logs, run the next Script with PowerS
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
  #Set your parameters(All parameters are requiered)
  $params = @(
-    "--awsKey", "",
-    "--awsSecret", "",
-    "--awsRegion", "",
-    "--awsLoggingGroupName", ""
+    "--awsKey","<Your_Aws_Key>",
+    "--awsSecret", "<Your_Aws_Secret>",
+    "--awsRegion", "<Your_Aws_Region>" # (e.g. us-east-1)
+    "--awsLoggingGroupName",  "<Your_Log_Group>"
 )
 Write-host -ForegroundColor Cyan  $almaToEdFiExe $params
  &  $almaToEdFiExe $params
