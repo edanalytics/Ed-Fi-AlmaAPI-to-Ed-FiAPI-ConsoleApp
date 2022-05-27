@@ -24,8 +24,8 @@ namespace EdFi.AlmaToEdFi.Cmd
     {
         static int Main(string[] args)
         {
-            var commandLineParameters = GetCommandLineParameters();
-            commandLineParameters.Handler = CommandHandler.Create<string>(async (schoolYearFilter) =>
+            var commandLineParameters = CommandLineParameters.GetCommandLineParameters();
+            commandLineParameters.Handler = CommandHandler.Create<string, string, string, string, string>(async (schoolYearFilter, awsKey, awsSecret, awsRegion, awsLoggingGroupName) =>
             {
                 // Trust all SSL certs -- needed unless signed SSL certificates are configured.
                 // Trust all SSL certs -- needed unless signed SSL certificates are configured.
@@ -36,9 +36,9 @@ namespace EdFi.AlmaToEdFi.Cmd
                 //to the latest unless we explicitly request it. Some hosting environments will not allow older versions
                 //of TLS, and thus calls can fail without this extra configuration.
                 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
-                var config = GetConfiguration("", "", "").Build();
+                var config = GetConfiguration(awsKey, awsSecret, awsRegion).Build();
                 var settings = config.GetSection("Settings").Get<AppSettings>();
-                settings = CheckParameters(settings,schoolYearFilter);
+                settings = CommandLineParameters.CheckParameters(settings,schoolYearFilter, awsKey, awsSecret, awsRegion, awsLoggingGroupName);
                 // Initialize the Service Collection
                 var services = new ServiceCollection();
                 IoCConfig.RegisterDependencies(services, config, settings);
@@ -57,32 +57,6 @@ namespace EdFi.AlmaToEdFi.Cmd
             });
             // Parse the incoming args and invoke the handler
             return commandLineParameters.Invoke(args);
-        }
-        private static RootCommand GetCommandLineParameters()
-        {
-            // Create some options: 
-            var schoolYearFilter = new Option<string>(
-                "--schoolYearFilter",
-                description: "if you want to filter by School Year , pass the value (e.g. 2019-2020)", getDefaultValue: () => "");
-                schoolYearFilter.Required = false;
-
-            // Add the options to a root command:
-            var rootCommand = new RootCommand
-                {
-                    schoolYearFilter
-                };
-            rootCommand.Description = "EdFi.AlmaToEdFi.Cmd (Example of parameters :  --schoolYearFilter 2019-2020)";
-            return rootCommand;
-        }
-
-        private static AppSettings CheckParameters(AppSettings settings,string schoolYearFilter)
-        {
-            //ovewrite the appsetting value with the parameter
-            if (!string.IsNullOrEmpty(schoolYearFilter.Trim()))
-            {
-                settings.SourceAlmaAPISettings.SchoolYearFilter = schoolYearFilter;
-            }
-            return settings;
         }
         private static IConfigurationBuilder GetConfiguration(string awsKey, string awsSecret, string awsRegion)
         {

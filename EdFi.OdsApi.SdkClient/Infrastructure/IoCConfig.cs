@@ -35,9 +35,6 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
 
         private static void RegisterApplicationDependencies(IServiceCollection container, IConfiguration config, AppSettings appSettings)
         {
-            //Remove this 2 lines after finish the aws improvements
-            appSettings.AwsConfiguration.AWSAccessKey = "";
-            appSettings.AwsConfiguration.AWSSecretKey = "";
             // Configure the Logger
             container.AddLogging(builder =>
             {
