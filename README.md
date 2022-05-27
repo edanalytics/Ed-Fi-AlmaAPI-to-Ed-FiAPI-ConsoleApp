@@ -14,18 +14,21 @@ If we need to get the data filtered by School Year, set the value you want to fi
 
 ###### Or with PowerShell
 ```powershell 
-#Change your paths
+#Change your directory
  cd  "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\"
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
- #Set your parameter (All parameters are requiered)
+ #Set your parameter (The parameter is requiered)
  $params = @(
     "--schoolYearFilter", "2020-2021"
 )
 Write-host -ForegroundColor Cyan  $apiLoaderExe $params
  &  $almaToEdFiExe $params
+ 
+ 
 ```
+![image](https://user-images.githubusercontent.com/85459544/170789440-f03687c7-593a-4294-b5e9-ae43ce043caa.png)
 
-### AWS Parameter Store and AWS CloudWatch
+### AWS Parameter Store
 
 #### Loading From AWS Parameter Store
 
@@ -71,7 +74,7 @@ In the Value field, type your filter string ( e.g. ***2020-2021***).
  Now you can run this script with PowerShell to Run the application getting your values from Aws Parameter Store.
 
 ```powershell 
-#Change your paths
+#Change your directory
  cd  "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\"
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
  #Set your parameters(All parameters are requiered)
@@ -85,13 +88,19 @@ Write-host -ForegroundColor Cyan  $apiLoaderExe $params
  
 ```
 
+### Logs
+
+By default, the application creates log files, to review them go to the root directory and find the Log folder.
+
+![image](https://user-images.githubusercontent.com/85459544/170787787-6eea7c24-6f77-41aa-ae6a-5fba26a55792.png)
+
 #### AWS CloudWatch Logs
 
 If you already have CloudWatch enabled for logs, run the next Script with PowerShell to execute the application with Aws CloudWatch logs.
 
 
 ```powershell 
-#Change your paths
+#Change your directory
  cd  "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\"
  $almaToEdFiExe = "C:\Ed-Fi\Exchange-OSS\Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp\EdFi.OdsApi.SdkClient\bin\Debug\netcoreapp3.1\EdFi.AlmaToEdFi.Cmd.exe"
  #Set your parameters(All parameters are requiered)
