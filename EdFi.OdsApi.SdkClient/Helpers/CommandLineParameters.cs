@@ -28,12 +28,12 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
 
             var awsRegion = new Option<string>(
                 "--awsRegion",
-                description: "your Aws Region", getDefaultValue: () => "");
+                description: "your Aws Region (e.g. us-east-1)", getDefaultValue: () => "");
             awsRegion.Required = false;
 
             var awsLoggingGroupName = new Option<string>(
                 "--awsLoggingGroupName",
-                description: "The group name where the log is going to be Stored (CloudWatch)", getDefaultValue: () => "");
+                description: "Each log stream has to belong to one log group (e.g. AlmaApi)", getDefaultValue: () => "");
             awsLoggingGroupName.Required = false;
 
             // Add the options to a root command:
@@ -45,7 +45,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
                     awsRegion,
                     awsLoggingGroupName
                 };
-            rootCommand.Description = "EdFi.AlmaToEdFi.Cmd (Example of parameters :  --schoolYearFilter 2019-2020)";
+            rootCommand.Description = "EdFi.AlmaToEdFi.Cmd (Example of parameters :  --schoolYearFilter 2019-2020,--awsRegion us-east-1,--awsLoggingGroupName AlmaApi)";
             return rootCommand;
         }
 
