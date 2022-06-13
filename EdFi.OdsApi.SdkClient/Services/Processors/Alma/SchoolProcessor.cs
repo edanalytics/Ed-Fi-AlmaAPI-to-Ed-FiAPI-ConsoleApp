@@ -51,7 +51,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             var srcResponse = _apiAlma.School.Extract(almaSchoolCode,schoolYearId);
 
             // Transform & Load - Transform Load all the Alma records into the destination Ed-Fi API
-            srcResponse.response.districtId = _settings.DestinationEdFiAPISettings.DestinationLocalEducationAgencyId.ToString();
+            srcResponse.response.districtId = _settings.AlmaAPI.Connections.EdFi.TargetConnection.DestinationLocalEducationAgencyId.ToString();
             Load(TransformFromAlmaToEdFi(srcResponse.response), almaSchoolCode);
             _appLog.LogInformation($"Processed school: { almaSchoolCode}.");
         }
