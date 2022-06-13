@@ -1,26 +1,57 @@
 using System;
+using System.Collections.Generic;
 
 namespace EdFi.AlmaToEdFi.Common
 {
-    public interface IAppSettings
+    public interface IAppSettings    {
+        public AlmaAPI AlmaAPI { get; set; }
+    }
+    public class AlmaAPI
     {
-        EdFiApiSettings DestinationEdFiAPISettings { get; set; }
-        AlmaApiSettings SourceAlmaAPISettings { get; set; }
+        public string ParameterStoreProvider { get; set; } = "";
+        public Connections Connections { get; set; }
+    }
+    public class Connections
+    {
+        public string  SourceConnectionFilter { get; set; } = "";
+        public string TargetConnectionFilter { get; set; } = "";
+        public Alma Alma { get; set; }
+        public EdFi EdFi { get; set; }
+    }
+    public class Alma
+    {
+        public SourceConnection SourceConnection { get; set; }
+    }
+    public class EdFi
+    {
+        public TargetConnection TargetConnection { get; set; }
     }
 
+    public class SourceConnection : ApiConfig
+    {
+        public string Name { get; set; }
+        public string District { get; set; }
+        public string SchoolYearFilter { get; set; }
+        public string SchoolFilter { get; set; }
+    }
+
+    public class TargetConnection : ApiConfig
+    {
+        public string Name { get; set; }
+        public string DestinationLocalEducationAgencyId { get; set; }
+
+    }
     public class AppSettings : IAppSettings
     {
-        public AlmaApiSettings SourceAlmaAPISettings { get; set; }
-        public EdFiApiSettings DestinationEdFiAPISettings { get; set; }
         public Logging Logging { get; set; }
         public AwsConfiguration AwsConfiguration { get; set; }
+        public AlmaAPI AlmaAPI { get; set; }
+
     }
     public class AwsConfiguration
     {
         public string AWSAccessKey { get; set; }
         public string AWSSecretKey { get; set; }
-        public string AWSRegion { get; set; }
-        public string AWSLoggingGroupName { get; set; }
     }
     public abstract class ApiConfig
     {
@@ -33,6 +64,8 @@ namespace EdFi.AlmaToEdFi.Common
     {
         public string District { get; set; }
         public string SchoolYearFilter { get; set; }
+        public string SchoolFilter { get; set; }
+        
     }
 
     public class EdFiApiSettings : ApiConfig
@@ -60,6 +93,11 @@ namespace EdFi.AlmaToEdFi.Common
     {
         public LogLevel LogLevel { get; set; }
         public File File { get; set; }
+        public string  Region { get; set; }
+        public string LogGroup { get; set; }
+        public string LogStreamNamePrefix { get; set; }
+        public string LoggingProvider { get; set; }
+        
     }
 
 }
