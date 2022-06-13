@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Authenticators;
+using Alma.Api.Sdk.Authenticators;
 using EdFi.AlmaToEdFi.Common;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -21,10 +21,10 @@ namespace Alma.Api.Sdk.Extractors.Alma
             _settings = settings.Value;
 
             //Generate client (Set BaseURL)
-            _client = new RestClient(_settings.SourceAlmaAPISettings.Url)
+            _client = new RestClient(_settings.AlmaAPI.Connections.Alma.SourceConnection.Url)
             {
-                Authenticator = new DigestAuthenticator(_settings.SourceAlmaAPISettings.Key,
-                                                        _settings.SourceAlmaAPISettings.Secret)
+                Authenticator = new DigestAuthenticator(_settings.AlmaAPI.Connections.Alma.SourceConnection.Key,
+                                                        _settings.AlmaAPI.Connections.Alma.SourceConnection.Secret)
             };
 
             //JSON serializer settings (Utf8Json is used this time)
