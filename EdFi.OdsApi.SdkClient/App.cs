@@ -36,38 +36,43 @@ namespace EdFi.AlmaToEdFi.Cmd
         {
             _logger.LogInformation($"{DateTime.Now.ToLongDateString()} - Starting Alma API <> Ed-Fi API Sync...");
 
-            _logger.LogInformation($"Syncing from {_appSettings.SourceAlmaAPISettings.Url} to {_appSettings.DestinationEdFiAPISettings.Url} ");
+            _logger.LogInformation($"Syncing from {_appSettings.AlmaAPI.Connections.Alma.SourceConnection.Url} to {_appSettings.AlmaAPI.Connections.EdFi.TargetConnection.Url} ");
 
             Console.WriteLine($"There are {_processors.Count()} processors registered.");
             //  Get all schools in the district.
-            var almaSchools = _almaApi.DistrictSchools.Extract(_appSettings.SourceAlmaAPISettings.District);
-                // Then for each school execute every processor.
-                //ok 1-SchoolProcessor
-                //ok 2-SessionsProcessor ***Total Instructional Days????****
-                //ok 3-CourseProcessor *NumberOfParts??????*
-                //ok 4-CourseOfferingProcessor  ***All Courses are Offered????****
-                //ok 5-SectionProcessor
-                //ok 6-CalendarProcessor
-                //ok 7-CalendarDateProcessor
-                //ok 8-StudentProcessor
-                //ok 9-StudentSchoolAssociationsProcessor  ***How to get The Student Grade Level????****
-                //ok 10-StudentEducationOrganizationAssociationProcessor  ***Alma Api does not have type for email****
-                //11-StudentSchoolAttendanceEventProcessor ***Instructional Days Event????****
-                //12-StudentSectionAssociationProcessor
-                //13-StudentSectionAttendanceEventProcessor ***Alma Api does not have Student Section Attendance  ****
-                //14-StaffProcessor
-                //15-StaffEducationOrganizationEmploymentAssociationProcesor: ***How to get HireDate****
-                //16-StaffEducationOrganizationAssignmentAssociationProcesor
-                //17-StaffSectionProcessor
-                //18-StaffSchoolAssociationsProcessor
-                //19-StaffSectionAssociationProcessor
+            var almaSchools = _almaApi.DistrictSchools.Extract(_appSettings.AlmaAPI.Connections.Alma.SourceConnection.District);
+            var schoolFilter = _appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolFilter;
+            // Then for each school execute every processor.
+            //ok 1-SchoolProcessor
+            //ok 2-SessionsProcessor ***Total Instructional Days????****
+            //ok 3-CourseProcessor *NumberOfParts??????*
+            //ok 4-CourseOfferingProcessor  ***All Courses are Offered????****
+            //ok 5-SectionProcessor
+            //ok 6-CalendarProcessor
+            //ok 7-CalendarDateProcessor
+            //ok 8-StudentProcessor
+            //ok 9-StudentSchoolAssociationsProcessor  ***How to get The Student Grade Level????****
+            //ok 10-StudentEducationOrganizationAssociationProcessor  ***Alma Api does not have type for email****
+            //11-StudentSchoolAttendanceEventProcessor ***Instructional Days Event????****
+            //12-StudentSectionAssociationProcessor
+            //13-StudentSectionAttendanceEventProcessor ***Alma Api does not have Student Section Attendance  ****
+            //14-StaffProcessor
+            //15-StaffEducationOrganizationEmploymentAssociationProcesor: ***How to get HireDate****
+            //16-StaffEducationOrganizationAssignmentAssociationProcesor
+            //17-StaffSectionProcessor
+            //18-StaffSchoolAssociationsProcessor
+            //19-StaffSectionAssociationProcessor
             var overallStopWatch = Stopwatch.StartNew();
             var startTime = DateTime.Now;
+            if (!string.IsNullOrEmpty(schoolFilter))
+                almaSchools.response.schools = almaSchools.response.schools.Where(s=>s.id== schoolFilter || s.name == schoolFilter).ToList();
+            if (almaSchools.response.schools.Count < 1)
+                _logger.LogInformation($" ********** No School was found that matches [{schoolFilter}]*********");
             foreach (var school in almaSchools.response.schools)
             {
                 // _processors.OrderBy(x => x.ExecutionOrder).ToList().ForEach(x => x.ExecuteETL(school.id));
                 // Checking if we need to filter endpoints by SchoolYear
-                if (string.IsNullOrEmpty(_appSettings.SourceAlmaAPISettings.SchoolYearFilter))
+                if (string.IsNullOrEmpty(_appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolYearFilter))
                 {
                     RunProcessors(school,string.Empty);
                 }
@@ -100,7 +105,7 @@ namespace EdFi.AlmaToEdFi.Cmd
 
         private void ProcessorWithSchoolYear(School school)
         {
-            var schoolYearFilter = _appSettings.SourceAlmaAPISettings.SchoolYearFilter;
+            var schoolYearFilter = _appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolYearFilter;
             var schoolYear = _schoolYearsExtractor.Extract(school.id).Where(sY => sY.name == schoolYearFilter).ToList();
             if (schoolYear.Count==0)
             {
