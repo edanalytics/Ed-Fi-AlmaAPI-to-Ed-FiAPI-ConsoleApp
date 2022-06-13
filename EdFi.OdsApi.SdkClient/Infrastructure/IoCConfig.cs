@@ -15,6 +15,8 @@ using System;
 using EdFi.AlmaToEdFi.Cmd.Model;
 using System.IO;
 using Amazon.Runtime;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
 {
@@ -41,30 +43,41 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
                 builder.AddConsole();
                 builder.AddDebug();
                 //check if the log going for CloudWatch or File
-                if (!string.IsNullOrEmpty(appSettings.AwsConfiguration.AWSAccessKey)
-                    && !string.IsNullOrEmpty(appSettings.AwsConfiguration.AWSSecretKey)
-                    && !string.IsNullOrEmpty(appSettings.AwsConfiguration.AWSLoggingGroupName))
+                if (appSettings.Logging.LoggingProvider.ToLower().Contains("awscloudwatch"))
                 {
-                    var configLog = new AWS.Logger.AWSLoggerConfig(appSettings.AwsConfiguration.AWSLoggingGroupName);
-                    configLog.Region = appSettings.AwsConfiguration.AWSRegion;
-                    configLog.Credentials = new BasicAWSCredentials(appSettings.AwsConfiguration.AWSAccessKey, appSettings.AwsConfiguration.AWSSecretKey);
+                    LoggerFactory logFactory = new LoggerFactory();
+                    var configLog = new AWS.Logger.AWSLoggerConfig(appSettings.Logging.LogGroup== "" ? "AlmaApi" : appSettings.Logging.LogGroup);
+                    configLog.Region = appSettings.Logging.Region;
+                    configLog.LogStreamNamePrefix = appSettings.Logging.LogStreamNamePrefix;
+                   //configLog.Credentials = new BasicAWSCredentials(appSettings.AwsConfiguration.AWSAccessKey, appSettings.AwsConfiguration.AWSSecretKey);
                     builder.AddAWSProvider(configLog);
                 }
-                else
+                else 
                 {
                     string logPath = Path.Combine(Environment.CurrentDirectory, "Log", $"AlmaAppLog{DateTime.Now.ToString("yyyy-MM-dd")}.log");
                     builder.AddFile(logPath, true);
                 }
             });
-            if (!string.IsNullOrEmpty(appSettings.SourceAlmaAPISettings.SchoolYearFilter))
-            {
+
+            //SystemsManagerConfigurationProvider
+            if (!string.IsNullOrEmpty(appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolYearFilter))
                 // if SchoolYearFilter comes from comand line parameter we overwrite the value
-                config.GetSection("Settings:SourceAlmaAPISettings:SchoolYearFilter").Value =
-                appSettings.SourceAlmaAPISettings.SchoolYearFilter;
+                config.GetSection("Settings:AlmaAPI:Connections:Alma:SourceConnection:SchoolYearFilter").Value =
+                appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolYearFilter;
+
+            if (!string.IsNullOrEmpty(appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolFilter))
+                // if SchoolFilter comes from comand line parameter we overwrite the value
+                config.GetSection("Settings:AlmaAPI:Connections:Alma:SourceConnection:SchoolFilter").Value =
+                appSettings.AlmaAPI.Connections.Alma.SourceConnection.SchoolFilter;
+
+            // Check if the app is enabled to AWS Parameter Store
+            if (appSettings.AlmaAPI.ParameterStoreProvider.ToLower().Contains("awsparamstore"))
+            {
+                config.AddAlmaCustomParameters(appSettings.AlmaAPI.Connections.SourceConnectionFilter, appSettings.AlmaAPI.Connections.TargetConnectionFilter);
             }
+
             // Register the IOptions for app settings.
             container.Configure<AppSettings>(config.GetSection("Settings"));
-
             // Exception Handler
             container.AddScoped<ILoadExceptionHandler, LoadExceptionHandler>();
 
