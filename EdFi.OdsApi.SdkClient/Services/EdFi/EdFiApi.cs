@@ -59,15 +59,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             //var clientSecret = "";
 
             // TokenRetriever makes the oauth calls. It has RestSharp dependency, install via NuGet
-            var tokenRetriever = new TokenRetriever(_settings.DestinationEdFiAPISettings.Url, 
-                                                    _settings.DestinationEdFiAPISettings.Key, 
-                                                    _settings.DestinationEdFiAPISettings.Secret);
+            var tokenRetriever = new TokenRetriever(_settings.AlmaAPI.Connections.EdFi.TargetConnection.Url,
+                                                    _settings.AlmaAPI.Connections.EdFi.TargetConnection.Key,
+                                                    _settings.AlmaAPI.Connections.EdFi.TargetConnection.Secret);
 
             // Plug Oauth access token. Tokens will need to be refreshed when they expire
             var configuration = new Configuration
             {
                 AccessToken = tokenRetriever.ObtainNewBearerToken(),
-                BasePath = $"{_settings.DestinationEdFiAPISettings.Url}/data/v3/"
+                BasePath = $"{_settings.AlmaAPI.Connections.EdFi.TargetConnection.Url}/data/v3/"
             };
             _schoolsApi = new SchoolsApi(configuration);
             _studentsApi = new StudentsApi(configuration);
