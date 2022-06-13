@@ -25,7 +25,7 @@ namespace EdFi.AlmaToEdFi.Cmd
         static int Main(string[] args)
         {
             var commandLineParameters = CommandLineParameters.GetCommandLineParameters();
-            commandLineParameters.Handler = CommandHandler.Create<string, string, string, string, string>(async (schoolYearFilter, awsKey, awsSecret, awsRegion, awsLoggingGroupName) =>
+            commandLineParameters.Handler = CommandHandler.Create<string, string, string, string, string, string>(async (awsSourceConnectionName, awsDestinationConnectionName, schoolYearFilter, SchoolFilter, awsRegion, awsLoggingGroupName) =>
             {
                 // Trust all SSL certs -- needed unless signed SSL certificates are configured.
                 // Trust all SSL certs -- needed unless signed SSL certificates are configured.
@@ -36,9 +36,10 @@ namespace EdFi.AlmaToEdFi.Cmd
                 //to the latest unless we explicitly request it. Some hosting environments will not allow older versions
                 //of TLS, and thus calls can fail without this extra configuration.
                 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
-                var config = GetConfiguration(awsKey, awsSecret, awsRegion).Build();
+                var config = GetConfiguration().Build();
+              
                 var settings = config.GetSection("Settings").Get<AppSettings>();
-                settings = CommandLineParameters.CheckParameters(settings,schoolYearFilter, awsKey, awsSecret, awsRegion, awsLoggingGroupName);
+                settings = CommandLineParameters.CheckParameters(settings, awsSourceConnectionName, awsDestinationConnectionName, schoolYearFilter, SchoolFilter, awsRegion, awsLoggingGroupName);
                 // Initialize the Service Collection
                 var services = new ServiceCollection();
                 IoCConfig.RegisterDependencies(services, config, settings);
@@ -56,22 +57,33 @@ namespace EdFi.AlmaToEdFi.Cmd
                 Console.ReadLine();
             });
             // Parse the incoming args and invoke the handler
-            return commandLineParameters.Invoke(args);
+            try
+            {
+                return commandLineParameters.Invoke(args);
+            }
+            catch (Exception e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.Write(e.Message);
+                Console.ResetColor ();
+                return -1;
+            }
         }
-        private static IConfigurationBuilder GetConfiguration(string awsKey, string awsSecret, string awsRegion)
+
+        private static IConfigurationBuilder GetConfiguration()
         {
             var configBuilder = new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);         
             // Switch Config Provider based on appSettings.json
             var settings = configBuilder.Build().GetSection("Settings").Get<AppSettings>();
-            if (!string.IsNullOrEmpty(awsKey) && !string.IsNullOrEmpty(awsSecret) && !string.IsNullOrEmpty(awsRegion))
+            if (settings.AlmaAPI.ParameterStoreProvider.ToLower().Contains("awsparamstore") )
             {
-                configBuilder.AddSystemsManager("/AlmaApi",
-                                                  new AWSOptions
-                                                  {
-                                                      Region = RegionEndpoint.GetBySystemName(awsRegion),
-                                                      Credentials = new BasicAWSCredentials(awsKey, awsSecret)
-                                                  }, TimeSpan.FromSeconds(20));
+                //configBuilder.AddSystemsManager("/AlmaApi/",
+                //                                new AWSOptions
+                //                                {
+                //                                    Region = RegionEndpoint.GetBySystemName(awsRegion)
+                //                                }, TimeSpan.FromSeconds(20));
+                configBuilder.AddSystemsManager("/AlmaApi/", TimeSpan.FromSeconds(20));
             }
             return configBuilder;
         }
