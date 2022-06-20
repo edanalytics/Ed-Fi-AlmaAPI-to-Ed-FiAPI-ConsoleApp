@@ -15,9 +15,9 @@ This .Net Core console application pulls from the Alma API and inserts into the 
        
        "--schoolFilter", "<School_Filter>" The application gets only the information from this School.
        
-       "--awsSourceConnectionName", "<your_aws_Source_Connection_Name>"  Allow to specify your SourceConnectionName to Load the Parameters from  AWS.(If you have multiples SourceConnections an ParameterStoreProvider is configured as AWSParamStore)
+       "--awsSourceConnectionName", "<your_aws_Source_Connection_Name>" To load the parameters from  AWS, allow to specify your SourceConnectionName If you have multiples SourceConnections(ParameterStoreProvider from appsettings.json should be configured as "AWSParamStore").   
        
-	"--awsDestinationConnectionName", "<your_aws_Destination_Connection_Name>"  Allow to specify your ConnectionDestinationName to Load the Parameters from  AWS.(If you have multiples ConnectionDestinationName an ParameterStoreProvider is configured as AWSParamStore)
+	"--awsDestinationConnectionName", "<your_aws_Destination_Connection_Name>" To load the parameters from  AWS, allow to specify your ConnectionDestinationName If you have multiples ConnectionDestinationName(ParameterStoreProvider from appsettings.json should be configured as "AWSParamStore").
 	```
 ### Filter EndPoints by School Year
 
@@ -80,10 +80,10 @@ In the Value field, type the value for DestinationLocalEducationAgencyId
    
    #####  TargetConnection
   ```
-	/AlmaApi/Connections/Alma/{TargetConnectionName}/Url
-	/AlmaApi/Connections/Alma/{TargetConnectionName}/Key
-	/AlmaApi/Connections/Alma/{TargetConnectionName}/Secret
-	/AlmaApi/Connections/Alma/{TargetConnectionName}/DestinationLocalEducationAgencyId
+	/AlmaApi/Connections/EdFi/{TargetConnectionName}/Url
+	/AlmaApi/Connections/EdFi/{TargetConnectionName}/Key
+	/AlmaApi/Connections/EdFi/{TargetConnectionName}/Secret
+	/AlmaApi/Connections/EdFi/{TargetConnectionName}/DestinationLocalEducationAgencyId
   ```
 ```
 {
@@ -158,7 +158,7 @@ By default, the application creates log files, to review them go to the root dir
 
 #### AWS CloudWatch Logs
 
-1. In the appsettings.json file, Switch the  "LoggingProvider" to "AWSCloudWatch".
+1. In the appsettings.json file, switch the value for "LoggingProvider" to "AWSCloudWatch".
 2. Run the application.
 
 
