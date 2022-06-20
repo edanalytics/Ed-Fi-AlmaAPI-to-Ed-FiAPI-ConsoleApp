@@ -68,7 +68,7 @@ namespace Alma.Api.Sdk.Extractors
                 var attendance = GetForbidenAttendances(tempAttendances);
                 if (attendance.Count > 0)
                     attendance.ForEach(a => concurrentAttendanceList.Add(a));
-                Console.WriteLine($"  *********** {_attendanceForbiden.Count } Forbiden Attendances were processed correctly***************");
+                Console.WriteLine($"  *********** {_attendanceForbiden.Where(x=>x.Skip==false && x.Success==true).ToList().Count } Forbiden Attendances were processed correctly***************");
             }
             stopWatch.Stop();
             return concurrentAttendanceList.GroupBy(x => new { x.schoolYearId, x.studentId, x.date, x.status})
@@ -95,14 +95,17 @@ namespace Alma.Api.Sdk.Extractors
         }     
         private List<Attendance> GetForbidenAttendances(ConcurrentBag<Attendance> StudentSttendance)
         {
-            foreach (var attendance in _attendanceForbiden.Where(x => x.Success == false)) {
+            foreach (var attendance in _attendanceForbiden.Where(x => x.Success == false && x.Skip == false)) {
                 // Print some feedback
                 var request = new RestRequest(attendance.EndPoint, DataFormat.Json);
                 var response = _client.Get(request);
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
-                    var error = response.ErrorMessage == null ? response.StatusCode.ToString() : response.ErrorMessage;
-                   // _logger.LogWarning($"Fail again ****** {error} ******- school:({attendance.SchoolCode}) year:{attendance.SchoolYear.name}");
+                    attendance.FailedAttempts += 1;
+                    if (attendance.FailedAttempts > 2)
+                        attendance.Skip = true;
+                        var error = response.ErrorMessage == null ? response.StatusCode.ToString() : response.ErrorMessage;
+                    _logger.LogWarning($"({attendance.FailedAttempts } Failed Attempts): ****** {attendance.EndPoint} ******");
                 }
                 else
                 {
@@ -113,26 +116,7 @@ namespace Alma.Api.Sdk.Extractors
                 }
             }
 
-           // Parallel.ForEach(_attendanceForbiden.Where(x=>x.Success==false), new ParallelOptions { MaxDegreeOfParallelism = 2 },
-           //   attendance => {
-           //       // Print some feedback
-           //       var request = new RestRequest(attendance.EndPoint, DataFormat.Json);
-           //       var response = _client.Get(request);
-           //       if (response.StatusCode != HttpStatusCode.OK)
-           //       {
-           //           var error = response.ErrorMessage == null ? response.StatusCode.ToString() : response.ErrorMessage;
-           //           _logger.LogWarning($"Fail again ****** {error} ******- school:({attendance.SchoolCode}) year:{attendance.SchoolYear.name}");
-           //       }
-           //       else
-           //       {
-           //           attendance.Success = true;
-           //           //Deserialize JSON data
-           //           var attendanceResponse = new Utf8JsonSerializer().Deserialize<ListResponse<Attendance>>(response);
-           //           attendanceResponse.response.ForEach(c => { c.studentId = attendance.StudentId; c.SchoolYear = attendance.SchoolYear; StudentSttendance.Add(c); });
-           //       }
-           //   }
-           //);
-            if (_attendanceForbiden.Count(x => x.Success == false) > 0)
+            if (_attendanceForbiden.Count(x => x.Success == false && x.Skip == false) > 0)
                 GetForbidenAttendances(StudentSttendance);
 
             return StudentSttendance.ToList();
