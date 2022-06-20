@@ -21,7 +21,7 @@ This .Net Core console application pulls from the Alma API and inserts into the 
 	```
 ### Filter EndPoints by School Year
 
-If we need to get the data filtered by School Year, set the value you want to filter to the `SchoolYearFilter` property (e.g. 2020-2021) in the appsettings.json and run the application.
+If we need to get the data filtered by School Year, set the value you want to filter to the `SchoolYearFilter` property in the appsettings.json  (e.g. 2020-2021) and run the application.
 
 ###### Or with PowerShell
 ```powershell 
