@@ -1,33 +1,45 @@
 {
     "Descriptor": "AttendanceEventCategoryDescriptor",
     "Mapping": [
-      {
-        "Src": "Excused Absent",
-        "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Excused Absence"
-      },
-      {
-        "Src": "Unexcused Absent",
-        "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Unexcused Absence"
-      },
-      {
-        "Src": "Late",
-        "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Tardy"
-      },
-      {
-        "Src": "Left",
-        "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Early departure"
-      },
-      {
-        "Src": "Returned",
-        "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Partial"
-      },
-      {
-        "Src": "Present",
-        "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#In Attendance"
-      },
-      {
-        "Src": "default",
-        "Dest": ""
-      }
+        {
+            "Src": "Excused Absent",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Excused Absence"
+        },
+        {
+            "Src": "Unexcused Absent",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Unexcused Absence"
+        },
+        {
+            "Src": "Late",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Tardy"
+        },
+        {
+            "Src": "Left",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Early departure"
+        },
+        {
+            "Src": "Returned",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Partial"
+        },
+        {
+            "Src": "Half Day",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Partial"
+        },
+        {
+            "Src": "Excused Half Day",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Partial"
+        },
+        {
+            "Src": "Unexcused Half Day",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#Partial"
+        },
+        {
+            "Src": "Present",
+            "Dest": "uri://ed-fi.org/AttendanceEventCategoryDescriptor#In Attendance"
+        },
+        {
+            "Src": "default",
+            "Dest": ""
+        }
     ]
 }
