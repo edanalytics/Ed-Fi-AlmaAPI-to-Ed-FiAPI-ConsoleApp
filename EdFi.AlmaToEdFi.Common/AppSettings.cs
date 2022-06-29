@@ -43,6 +43,8 @@ namespace EdFi.AlmaToEdFi.Common
     }
     public class AppSettings : IAppSettings
     {
+        
+        public int StartWithProcessor { get; set; }
         public Logging Logging { get; set; }
         public AwsConfiguration AwsConfiguration { get; set; }
         public AlmaAPI AlmaAPI { get; set; }
