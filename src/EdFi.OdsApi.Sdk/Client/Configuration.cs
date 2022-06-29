@@ -54,7 +54,7 @@ namespace EdFi.OdsApi.Sdk.Client
             if (status >= 400)
             {
                 return new ApiException(status,
-                    string.Format("Error calling {0}: {1}", methodName, response.Content),
+                    string.Format("Error calling {0}: Status: {2}, StatusDescription: {3}, Payload: {1}", methodName, response.Content, response.StatusCode, response.StatusDescription),
                     response.Content);
             }
             
