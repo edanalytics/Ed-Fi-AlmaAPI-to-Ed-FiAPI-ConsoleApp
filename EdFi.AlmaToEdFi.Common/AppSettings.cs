@@ -25,6 +25,8 @@ namespace EdFi.AlmaToEdFi.Common
     public class EdFi
     {
         public TargetConnection TargetConnection { get; set; }
+        public DateTime RenewSessionAt { get; set; }// minutes to renew session
+        public Double RenewSessionIn { get; set; }// minutes to renew session
     }
 
     public class SourceConnection : ApiConfig
@@ -39,6 +41,7 @@ namespace EdFi.AlmaToEdFi.Common
     {
         public string Name { get; set; }
         public string DestinationLocalEducationAgencyId { get; set; }
+
 
     }
     public class AppSettings : IAppSettings

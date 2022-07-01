@@ -32,6 +32,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
 
             // Once everything is configured then lets configure the App.
             container.AddTransient<App>();
+            container.AddTransient<AppEdfitest>();
         }
 
 
@@ -74,7 +75,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Infrastructure
             if (appSettings.AlmaAPI.ParameterStoreProvider.ToLower().Contains("awsparamstore"))
             {
                 config.AddAlmaCustomParameters(appSettings.AlmaAPI.Connections.SourceConnectionFilter, appSettings.AlmaAPI.Connections.TargetConnectionFilter);
-            }
+            }           
 
             // Register the IOptions for app settings.
             container.Configure<AppSettings>(config.GetSection("Settings"));

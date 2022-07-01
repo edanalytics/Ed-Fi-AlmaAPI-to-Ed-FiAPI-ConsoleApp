@@ -93,9 +93,7 @@ namespace EdFi.AlmaToEdFi.Cmd
 
         private void RunProcessors(School school, string schoolYearId)
         {
-            var processors = _processors.OrderBy(x => x.ExecutionOrder).ToList();
-
-
+            var processors = _processors.Where(x => x.ExecutionOrder > 0).ToList();
             if (_appSettings.StartWithProcessor > 10)
                 processors = processors.Where(x => x.ExecutionOrder >= _appSettings.StartWithProcessor).ToList();
 

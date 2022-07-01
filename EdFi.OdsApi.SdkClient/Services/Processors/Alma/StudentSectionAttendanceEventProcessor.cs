@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.Data;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
@@ -61,6 +61,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         {
             try
             {
+               
                 //var result = _apiEdFi.SSectionAttendance.PostStudentSectionAttendanceEventWithHttpInfo(resource);
                 //_exceptionHandler.HandleHttpCode(result);
             }

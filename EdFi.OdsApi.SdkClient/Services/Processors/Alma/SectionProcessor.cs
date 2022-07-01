@@ -56,6 +56,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         {
             try
             {
+                if (_apiEdFi.TokenNeedsToRenew())
+                    _apiEdFi.RenewToken();
+
                 var result = _apiEdFi.Sections.PostSectionWithHttpInfo(resource);
                 _exceptionHandler.HandleHttpCode(result);
 

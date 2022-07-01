@@ -17,7 +17,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         public int ExecutionOrder => 70;
         public int RecordIndex =0;
         private IAlmaApi _apiAlma;
-        private readonly IEdFiApi _edFiApi;
+        private readonly IEdFiApi _apiEdFi;
         private readonly ILoadExceptionHandler _exceptionHandler;
         private readonly ICalendarDateTransformer _calendarDateTransformer;
         private readonly ILogger _appLog;
@@ -28,7 +28,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         ILoadExceptionHandler exceptionHandler)
         {
             _apiAlma = almaApi;
-            _edFiApi = edFiApi;
+            _apiEdFi = edFiApi;
             _exceptionHandler = exceptionHandler;
             _calendarDateTransformer = calendarDateTransformer;
             _appLog = logger.CreateLogger("Calendar Date Processor");
@@ -56,7 +56,10 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         {
             try
             {
-                var result = _edFiApi.CalendarDates.PostCalendarDateWithHttpInfo(resource);
+                if (_apiEdFi.TokenNeedsToRenew())
+                    _apiEdFi.RenewToken();
+
+                var result = _apiEdFi.CalendarDates.PostCalendarDateWithHttpInfo(resource);
                 _exceptionHandler.HandleHttpCode(result);
 
                 RecordIndex++;
