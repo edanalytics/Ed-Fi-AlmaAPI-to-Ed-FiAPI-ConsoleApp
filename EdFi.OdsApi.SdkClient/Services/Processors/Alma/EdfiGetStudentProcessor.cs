@@ -51,8 +51,8 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         {
             try
             {
-                if(_apiEdFi.TokenNeedsToRenew())
-                    _apiEdFi.RenewToken();
+                if(_apiEdFi.NeedsRefreshToken())
+                    _apiEdFi.RefreshToken();
                 var result = _apiEdFi.Students.GetStudents();
                 RecordIndex++;
                 if (RecordIndex % 20 == 0)

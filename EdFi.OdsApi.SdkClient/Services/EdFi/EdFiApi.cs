@@ -25,8 +25,8 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
         StaffSchoolAssociationsApi StaffSchoolAssociations { get; }
         StaffEducationOrganizationAssignmentAssociationsApi StaffEducationOrganizationAssignment { get; }
         StaffEducationOrganizationEmploymentAssociationsApi StaffEducationOrganizationEmployment { get; }
-        public void RenewToken();
-        public bool TokenNeedsToRenew();
+        public void RefreshToken();
+        public bool NeedsRefreshToken();
     }
 
     public class EdFiApi : IEdFiApi
@@ -53,10 +53,10 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
         public EdFiApi(IOptions<AppSettings> settings)
         {
             _settings = settings.Value;
-            RenewToken();
+            RefreshToken();
         }
 
-        public void RenewToken()
+        public void RefreshToken()
         {
 
 
@@ -66,7 +66,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             //var clientKey = "";
             //var clientSecret = "";
 
-                _settings.AlmaAPI.Connections.EdFi.RenewSessionAt = System.DateTime.Now.AddMinutes(_settings.AlmaAPI.Connections.EdFi.RenewSessionIn);
+                _settings.AlmaAPI.Connections.EdFi.RefreshTokenAt = System.DateTime.Now.AddMinutes(_settings.AlmaAPI.Connections.EdFi.RefreshTokenIn);
                 // TokenRetriever makes the oauth calls. It has RestSharp dependency, install via NuGet
                 var tokenRetriever = new TokenRetriever(_settings.AlmaAPI.Connections.EdFi.TargetConnection.Url,
                                                         _settings.AlmaAPI.Connections.EdFi.TargetConnection.Key,
@@ -99,9 +99,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             
             
         }
-        public bool TokenNeedsToRenew()
+        public bool NeedsRefreshToken()
         {
-            return System.DateTime.Now > _settings.AlmaAPI.Connections.EdFi.RenewSessionAt;
+            return ((System.DateTime.Now > _settings.AlmaAPI.Connections.EdFi.RefreshTokenAt) && (_settings.AlmaAPI.Connections.EdFi.RefreshTokenIn > 0));
         }
 
         public SchoolsApi Schools { get { return _schoolsApi; } }

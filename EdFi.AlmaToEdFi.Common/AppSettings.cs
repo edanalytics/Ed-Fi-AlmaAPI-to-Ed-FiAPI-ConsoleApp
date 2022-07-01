@@ -25,8 +25,8 @@ namespace EdFi.AlmaToEdFi.Common
     public class EdFi
     {
         public TargetConnection TargetConnection { get; set; }
-        public DateTime RenewSessionAt { get; set; }// minutes to renew session
-        public Double RenewSessionIn { get; set; }// minutes to renew session
+        public DateTime RefreshTokenAt { get; set; }// minutes to renew session
+        public Double RefreshTokenIn { get; set; }// minutes to renew session
     }
 
     public class SourceConnection : ApiConfig

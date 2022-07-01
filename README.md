@@ -116,7 +116,7 @@ In the Value field, type the value for DestinationLocalEducationAgencyId
                     }
                 },
                 "EdFi": {
-                    "RenewSessionIn": "28", //Minutes
+                    "RefreshTokenIn": "28", //Minutes
                     "TargetConnection": {
                         "Comment": "This should be your destination Ed-Fi ODS/API",
                         "Url": "",
