@@ -33,7 +33,7 @@ namespace Alma.Api.Sdk.Extractors
 
             schoolsResponse.response.addresses = GetSchoolAddresses(almaSchoolCode);
             schoolsResponse.response.phones = GetSchoolPhones(almaSchoolCode);
-            schoolsResponse.response.GradeLevels = GetGradeLevels(almaSchoolCode);
+            schoolsResponse.response.GradeLevels = GetGradeLevels(almaSchoolCode,   schoolYearId = "");
             return schoolsResponse;
         }
 
@@ -60,9 +60,11 @@ namespace Alma.Api.Sdk.Extractors
             var schoolsResponse = new Utf8JsonSerializer().Deserialize<Response<PhonesResponse>>(response);
             return schoolsResponse.response.phones;
         }
-        private List<GradeLevel> GetGradeLevels(string schoolCode)
+        private List<GradeLevel> GetGradeLevels(string schoolCode,string schoolYearId = "")
         {
-            var request = new RestRequest($"v2/{schoolCode}/grade-levels", DataFormat.Json);
+            if (!string.IsNullOrEmpty(schoolYearId))
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+            var request = new RestRequest($"v2/{schoolCode}/grade-levels{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
             if (response.StatusCode != HttpStatusCode.OK)
                 return new List<GradeLevel>();

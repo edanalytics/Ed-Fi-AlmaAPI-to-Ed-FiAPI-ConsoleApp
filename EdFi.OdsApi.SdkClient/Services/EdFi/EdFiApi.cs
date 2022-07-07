@@ -25,7 +25,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
         StaffSchoolAssociationsApi StaffSchoolAssociations { get; }
         StaffEducationOrganizationAssignmentAssociationsApi StaffEducationOrganizationAssignment { get; }
         StaffEducationOrganizationEmploymentAssociationsApi StaffEducationOrganizationEmployment { get; }
-}
+        public void RefreshToken();
+        public bool NeedsRefreshToken();
+    }
 
     public class EdFiApi : IEdFiApi
     {
@@ -37,7 +39,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
         CourseOfferingsApi _courseOfferingsApi;
         CoursesApi _coursesApi;
         SessionsApi _sessionsApi;
-        SectionsApi _sectionsApi { get; }
+        SectionsApi _sectionsApi;
         StudentEducationOrganizationAssociationsApi _sEOrgAssociationsApi;
         StudentSchoolAssociationsApi _sSchoolAssociationsApi;
         StudentSchoolAttendanceEventsApi _sSchoolAttendanceApi;
@@ -51,6 +53,12 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
         public EdFiApi(IOptions<AppSettings> settings)
         {
             _settings = settings.Value;
+            RefreshToken();
+        }
+
+        public void RefreshToken()
+        {
+
 
             //Oauth configuration
             //var apiBaseUrl = "https://desktop-da95dja/WebApi/data/v3/ed-fi/";
@@ -58,10 +66,11 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             //var clientKey = "";
             //var clientSecret = "";
 
-            // TokenRetriever makes the oauth calls. It has RestSharp dependency, install via NuGet
-            var tokenRetriever = new TokenRetriever(_settings.AlmaAPI.Connections.EdFi.TargetConnection.Url,
-                                                    _settings.AlmaAPI.Connections.EdFi.TargetConnection.Key,
-                                                    _settings.AlmaAPI.Connections.EdFi.TargetConnection.Secret);
+                _settings.AlmaAPI.Connections.EdFi.RefreshTokenAt = System.DateTime.Now.AddMinutes(_settings.AlmaAPI.Connections.EdFi.RefreshTokenIn);
+                // TokenRetriever makes the oauth calls. It has RestSharp dependency, install via NuGet
+                var tokenRetriever = new TokenRetriever(_settings.AlmaAPI.Connections.EdFi.TargetConnection.Url,
+                                                        _settings.AlmaAPI.Connections.EdFi.TargetConnection.Key,
+                                                        _settings.AlmaAPI.Connections.EdFi.TargetConnection.Secret);
 
             // Plug Oauth access token. Tokens will need to be refreshed when they expire
             var configuration = new Configuration
@@ -75,7 +84,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             _calendarDatesApi = new CalendarDatesApi(configuration);
             _courseOfferingsApi = new CourseOfferingsApi(configuration);
             _coursesApi = new CoursesApi(configuration);
-            _sessionsApi= new SessionsApi(configuration);
+            _sessionsApi = new SessionsApi(configuration);
             _sectionsApi = new SectionsApi(configuration);
             _sEOrgAssociationsApi = new StudentEducationOrganizationAssociationsApi(configuration);
             _sSchoolAssociationsApi = new StudentSchoolAssociationsApi(configuration);
@@ -83,10 +92,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.EdFi
             _sSectionAssociationsApi = new StudentSectionAssociationsApi(configuration);
             _sSectionAttendanceApi = new StudentSectionAttendanceEventsApi(configuration);
             _StaffsApi = new StaffsApi(configuration);
-            _staffSectionAssociations= new StaffSectionAssociationsApi(configuration);
-            _staffSchoolAssociations= new StaffSchoolAssociationsApi(configuration);
-             _staffEducationOrganizationAssignment = new StaffEducationOrganizationAssignmentAssociationsApi(configuration);
-             _staffEducationOrganizationEmployment = new StaffEducationOrganizationEmploymentAssociationsApi(configuration);
+            _staffSectionAssociations = new StaffSectionAssociationsApi(configuration);
+            _staffSchoolAssociations = new StaffSchoolAssociationsApi(configuration);
+            _staffEducationOrganizationAssignment = new StaffEducationOrganizationAssignmentAssociationsApi(configuration);
+            _staffEducationOrganizationEmployment = new StaffEducationOrganizationEmploymentAssociationsApi(configuration);
+            
+            
+        }
+        public bool NeedsRefreshToken()
+        {
+            return ((System.DateTime.Now > _settings.AlmaAPI.Connections.EdFi.RefreshTokenAt) && (_settings.AlmaAPI.Connections.EdFi.RefreshTokenIn > 0));
         }
 
         public SchoolsApi Schools { get { return _schoolsApi; } }

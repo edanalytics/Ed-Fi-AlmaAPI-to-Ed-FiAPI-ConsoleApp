@@ -89,6 +89,7 @@ In the Value field, type the value for DestinationLocalEducationAgencyId
 {
 
     "Settings": {
+        "StartWithProcessor": 1,
         "Logging": {
             "LoggingProvider": "File", // or "AWSCloudWatch"
             "Region": "us-east-1",
@@ -115,6 +116,7 @@ In the Value field, type the value for DestinationLocalEducationAgencyId
                     }
                 },
                 "EdFi": {
+                    "RefreshTokenIn": "28", //Minutes
                     "TargetConnection": {
                         "Comment": "This should be your destination Ed-Fi ODS/API",
                         "Url": "",

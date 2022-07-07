@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors;
+using Alma.Api.Sdk.Extractors;
 using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
@@ -66,6 +66,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         {
             try
             {
+                if (_apiEdFi.NeedsRefreshToken())
+                    _apiEdFi.RefreshToken();
+
                 var result = _apiEdFi.StaffSchoolAssociations.PostStaffSchoolAssociationWithHttpInfo(resource);
                 _exceptionHandler.HandleHttpCode(result);
 
