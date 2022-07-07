@@ -2,12 +2,16 @@
     "Descriptor": "GradeLevelDescriptor",
     "Mapping": [
         {
+            "Src": "K",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Kindergarten"
+        },
+        {
             "Src": "PK",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
         },
         {
             "Src": "PK1",
-            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
         },
         {
             "Src": "PK2",
@@ -21,10 +25,7 @@
             "Src": "PK4",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
         },
-        {
-            "Src": "K",
-            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Kindergarten"
-        },
+
         {
             "Src": "1st",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#First grade"
