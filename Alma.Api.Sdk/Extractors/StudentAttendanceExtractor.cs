@@ -22,7 +22,7 @@ namespace Alma.Api.Sdk.Extractors
         private readonly RestClient _client;
         private readonly ILogger<StudentAttendanceExtractor> _logger;
         private readonly ISchoolYearsExtractor _schoolYearsExtractor;
-        private readonly IStudentsExtractor _studentsExtractor;    
+        private readonly IStudentsExtractor _studentsExtractor;
         private List<AttendanceForbiden> _attendanceForbiden = new List<AttendanceForbiden>();
         public StudentAttendanceExtractor(IAlmaRestClientConfigurationProvider client,
                                    ISchoolYearsExtractor schoolYearsExtractor,
@@ -84,15 +84,15 @@ namespace Alma.Api.Sdk.Extractors
                 _attendanceForbiden.Add(new AttendanceForbiden { EndPoint= $"v2/{almaSchoolCode}/students/{StudentId}/attendance?schoolYearId={schoolYearId}"
                                                                  ,Success=false,SchoolYear= sYear ,StudentId= StudentId,SchoolCode= almaSchoolCode});
                 var error = response.ErrorMessage == null ? response.StatusCode.ToString() : response.ErrorMessage;
-                _logger.LogWarning( $" {error} - school:({almaSchoolCode}) year:{sYear.name} (will try again)");
+                _logger.LogWarning( $" {error} - school:({almaSchoolCode}) year:{sYear.name} studentId:{StudentId}  (will try again)");
                 return new List<Attendance>();
-            }                
+            }
             //Deserialize JSON data
             var attendanceResponse = new Utf8JsonSerializer().Deserialize<ListResponse<Attendance>>(response);
             attendanceResponse.response.ForEach(c => { c.studentId = StudentId; c.SchoolYear = sYear; });
-            
+
             return attendanceResponse.response;
-        }     
+        }
         private List<Attendance> GetForbidenAttendances(ConcurrentBag<Attendance> StudentSttendance)
         {
             foreach (var attendance in _attendanceForbiden.Where(x => x.Success == false && x.Skip == false)) {
