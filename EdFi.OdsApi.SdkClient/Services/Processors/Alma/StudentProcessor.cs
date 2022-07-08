@@ -67,7 +67,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
                 RecordIndex++;
                 if (RecordIndex % 20 == 0)
                 {
-                    ConsoleHelpers.WriteTextReplacingLastLine($"{RecordIndex} Students registered (Last Student registered : {student.FirstName })");
+                    ConsoleHelpers.WriteTextReplacingLastLine($"{RecordIndex} Students registered.");
                 }
                 
             }
