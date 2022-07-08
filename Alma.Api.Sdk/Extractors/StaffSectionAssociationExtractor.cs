@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using Microsoft.Extensions.Logging;
 using RestSharp;
@@ -39,6 +39,10 @@ namespace Alma.Api.Sdk.Extractors
         }
         public List<StaffSection> Extract(string almaSchoolCode, string schoolYearId = "")
         {
+            var schoolYearIdFilter = "";
+            if (!string.IsNullOrEmpty(schoolYearId))
+                schoolYearIdFilter = $"?schoolYearId={schoolYearId}";
+
             var almaSections = _sectionsExtractor.Extract(almaSchoolCode,schoolYearId);
             var almaCourses = _coursesExtractor.Extract(almaSchoolCode)
                               .GroupBy(x => new { x.schoolYearId, x.id })
@@ -54,7 +58,7 @@ namespace Alma.Api.Sdk.Extractors
                    var staffSecion = new StaffSection();
                    staffSecion.StaffId = staff.id;
                    staffSecion.roleId = staff.roleId;
-                   staffSecion.classes = GetStaffClasses(almaSchoolCode, staff.id, almaSections);
+                   staffSecion.classes = GetStaffClasses(almaSchoolCode, staff.id, almaSections, schoolYearId);
                    if (staffSecion.classes.Count > 0)
                    {
                        staffSecion.classes.ForEach(clas =>
@@ -62,7 +66,7 @@ namespace Alma.Api.Sdk.Extractors
                            if (clas.Course != null)
                                staffsSection.Add(staffSecion);
                            else
-                               _logger.LogWarning($"{almaSchoolCode}/staff/{staff.id}/classes :  No Courses exist for ClassId { clas.id} , School {almaSchoolCode}");
+                               _logger.LogWarning($"{almaSchoolCode}/staff/{staff.id}/classes{schoolYearIdFilter} :  No Courses exist for ClassId { clas.id} , School {almaSchoolCode}");
                        });
                    }
                    if (studentIndex % 10 == 0)
@@ -76,9 +80,11 @@ namespace Alma.Api.Sdk.Extractors
             return staffsSection.ToList();
         }
 
-        private List<StaffClass> GetStaffClasses(string almaSchoolCode, string StaffId, List<Section> almaSections)
+        private List<StaffClass> GetStaffClasses(string almaSchoolCode, string StaffId, List<Section> almaSections, string schoolYearId)
         {
-            var request = new RestRequest($"v2/{almaSchoolCode}/staff/{StaffId}/classes", DataFormat.Json);
+            if (!string.IsNullOrEmpty(schoolYearId))
+                schoolYearId = $"?schoolYearId={schoolYearId}";
+            var request = new RestRequest($"v2/{almaSchoolCode}/staff/{StaffId}/classes{schoolYearId}", DataFormat.Json);
             var response = _client.Get(request);
 
             if (response.StatusCode != HttpStatusCode.OK)
