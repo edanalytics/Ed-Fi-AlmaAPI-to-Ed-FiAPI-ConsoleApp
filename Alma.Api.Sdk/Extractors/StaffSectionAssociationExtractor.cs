@@ -66,7 +66,7 @@ namespace Alma.Api.Sdk.Extractors
                            if (clas.Course != null)
                                staffsSection.Add(staffSecion);
                            else
-                               _logger.LogWarning($"{almaSchoolCode}/staff/{staff.id}/classes{schoolYearIdFilter} :  No Courses exist for ClassId { clas.id} , School {almaSchoolCode}");
+                               _logger.LogWarning($"{almaSchoolCode}/staff/{staff.id}/classes{schoolYearIdFilter} :  No Courses exist for ClassId { clas.id} or the ClassId is incorrect, School {almaSchoolCode}");
                        });
                    }
                    if (studentIndex % 10 == 0)
