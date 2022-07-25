@@ -3,7 +3,7 @@
 This .Net Core console application pulls from the Alma API and inserts into the Ed-Fi ODS/API.
 
 ## Instructions
-1. Download the code: git clone git@github.com:Ed-Fi-Exchange-OSS/Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp.git
+1. Download the code: `git clone https://github.com/Ed-Fi-Exchange-OSS/Ed-Fi-AlmaAPI-to-Ed-FiAPI-ConsoleApp`
 2. Compile the application and publish it.
 3. Edit the appsettings.json file to include your Source and Destination APIs information.
 4. Run the application by executing the EdFi.AlmaToEdFi.Cmd.exe
@@ -170,7 +170,7 @@ For any support please create a ticket in the Ed-Fi tracker ticketing system: ht
 
 ## Legal Information
 
-Copyright (c) 2021 Ed-Fi Alliance, LLC and contributors.
+Copyright (c) 2022 Ed-Fi Alliance, LLC and contributors.
 
 Licensed under the [Apache License, Version 2.0](LICENSE) (the "License").
 
