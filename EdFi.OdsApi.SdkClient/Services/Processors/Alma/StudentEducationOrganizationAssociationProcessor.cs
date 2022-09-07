@@ -54,7 +54,19 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         private List<EdFiStudentEducationOrganizationAssociation> Transform(int schoolId, List<Student> srcStudents)
         {
             var EdfiStudentEducationOrganizations = new List<EdFiStudentEducationOrganizationAssociation>();
-            srcStudents.ForEach(x =>EdfiStudentEducationOrganizations.Add(_studentEducationOrganizationAssociation.TransformSrcToEdFi(schoolId,x)));
+            //Expanded line below.
+            //srcStudents.ForEach(x =>EdfiStudentEducationOrganizations.Add(_studentEducationOrganizationAssociation.TransformSrcToEdFi(schoolId,x)));
+            foreach (var x in srcStudents)
+            {
+                if (!String.IsNullOrEmpty(x.districtId)){
+                    //If the districtId isn't null or empty handle it normally. Else output to the logger that the job was skipped.
+                    EdfiStudentEducationOrganizations.Add(_studentEducationOrganizationAssociation.TransformSrcToEdFi(schoolId, x));
+                } else
+                {
+                    _appLog.LogInformation($"Skipped StudentEducationOrganizationAssociation POST for StudentID: {x.id} because the 'DistrictID' element was null or empty.");
+                }
+                
+            }
             return EdfiStudentEducationOrganizations;
         }
 
