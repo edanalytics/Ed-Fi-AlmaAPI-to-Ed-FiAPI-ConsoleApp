@@ -63,7 +63,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
                     EdfiStudentEducationOrganizations.Add(_studentEducationOrganizationAssociation.TransformSrcToEdFi(schoolId, x));
                 } else
                 {
-                    _appLog.LogInformation($"Skipped StudentEducationOrganizationAssociation POST for StudentID: {x.id} because the 'DistrictID' element was null or empty.");
+                    _appLog.LogInformation($"INFO: Skipped StudentEducationOrganizationAssociation POST for StudentID: {x.id} because the 'DistrictID' element was null or empty.");
                 }
                 
             }

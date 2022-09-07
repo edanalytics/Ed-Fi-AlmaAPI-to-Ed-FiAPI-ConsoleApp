@@ -22,9 +22,11 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         {
             //Check to see if the Student DoB is null or empty. The code below will enter "1/1/0001" as the default value even when fed a null value.
             //This is an issue because SQL rejects anything before 01/01/1753.
+            //This is attempted to be handeled inside of the constructor for student by checking if it's null. However, since we send it through Convert.ToDateTime the null value is converted to the default .NET value which is outside of the SQL range.
             if (String.IsNullOrEmpty(srcStudent.dob))
             {
                 srcStudent.dob = "9999-12-30";
+                Console.WriteLine($"INFO: Date of birth has been defaulted for StudentID: {srcStudent.id}. This is because the API is returning either a null or empty date of birth for this student.");
             }
             return  new EdFiStudent(null, srcStudent.id, null, null, null, Convert.ToDateTime(srcStudent.dob), null, 
                                     GetEdFiGenderDescriptors(srcStudent.gender), null, null, null, srcStudent.firstName,
