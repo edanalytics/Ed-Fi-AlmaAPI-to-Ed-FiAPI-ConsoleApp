@@ -45,9 +45,21 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var studentEmails = new List<EdFiStudentEducationOrganizationAssociationElectronicMail>();
             srcStudent.emails.ForEach(email => { studentEmails.Add(new EdFiStudentEducationOrganizationAssociationElectronicMail(GetEdFiElectronicMailTypeDescriptors("default"),
                                                                                                                                     email.emailAddress, null, null)); });
-            var educationOrganizationReference = new EdFiEducationOrganizationReference(schoolId);            
-            var studentReference = new EdFiStudentReference(srcStudent.id);
-            var studentIdentificationSystem= GetEdFiStudentIdentificationDescriptors(srcStudent.id, srcStudent.districtId, srcStudent.stateId, srcStudent.schoolId);
+            var educationOrganizationReference = new EdFiEducationOrganizationReference(schoolId);
+            //Updated to use srcStudent.stateID instead of srcStudent.id
+            EdFiStudentReference studentReference = null;
+            //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
+            //This will not insert the student's information but an INFO has already been output for this student during the student posts.
+            if (srcStudent.stateId != null)
+            {
+                studentReference = new EdFiStudentReference(srcStudent.stateId);
+            }
+            else
+            {
+                studentReference = new EdFiStudentReference(srcStudent.id);
+            }
+            //Updated to use srcStudent.stateID instead of srcStudent.id
+            var studentIdentificationSystem = GetEdFiStudentIdentificationDescriptors(srcStudent.stateId, srcStudent.districtId, srcStudent.stateId, srcStudent.schoolId);
             if (studentIdentificationSystem.Count == 0)
                 studentIdentificationSystem = null;
             return new EdFiStudentEducationOrganizationAssociation(null,
@@ -94,6 +106,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         public List<EdFiStudentEducationOrganizationAssociationRace> GetEdFiRaceDescriptors(List<string> srcRace)
         {
             var StudentEducationOrganizationAssociationRace = new List<EdFiStudentEducationOrganizationAssociationRace>();
+
             foreach (var race in srcRace)
             {
                 var edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("RaceDescriptor", race);

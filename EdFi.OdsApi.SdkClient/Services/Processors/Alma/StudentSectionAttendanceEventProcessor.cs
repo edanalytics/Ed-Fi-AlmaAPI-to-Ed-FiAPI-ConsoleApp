@@ -1,7 +1,10 @@
+using Alma.Api.Sdk.Extractors;
 using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.Data;
 using EdFi.AlmaToEdFi.Cmd.Services.EdFi;
+using EdFi.AlmaToEdFi.Common;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -18,6 +21,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         private readonly ILogger _appLog;
         private readonly ILoadExceptionHandler _exceptionHandler;
         public string _almaSchoolCode = "";
+        AppSettings _appSettings;
         public StudentSectionAttendanceEventProcessor(IAlmaApi almaApi,
                                                         IEdFiApi edFiApi,
                                                         ILoggerFactory logger,
@@ -53,7 +57,20 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         private EdFiStudentSectionAttendanceEvent Map(AlmaStudentSectionAttendanceEvent resource)
         {
             var sectionReference = new EdFiSectionReference(resource.LocalCourseCode, resource.SchoolId, resource.SchoolYear, resource.SectionIdentifier, resource.SessionName, null);
-            var studentReference = new EdFiStudentReference(resource.StudentId);
+            //Use a helper function to translate the almaID to a StateId.
+            StudentTranslation st = new StudentTranslation();
+            Student studentResponse = StudentTranslation.GetStudentById(resource.StudentId);
+            EdFiStudentReference studentReference = null;
+            //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
+            //This will not insert the student's information but an INFO has already been output for this student during the student posts.
+            if (studentResponse.stateId != null)
+            {
+                studentReference = new EdFiStudentReference(studentResponse.stateId);
+            }
+            else
+            {
+                studentReference = new EdFiStudentReference(resource.StudentId);
+            }
             return new EdFiStudentSectionAttendanceEvent(null, EdFiAttendanceEventCategoryDescriptorTranslator(resource.Descriptor), resource.EventDate, sectionReference, studentReference);
         }
 

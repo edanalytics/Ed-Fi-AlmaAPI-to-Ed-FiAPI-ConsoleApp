@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using RestSharp;
 using RestSharp.Serializers.Utf8Json;
@@ -38,6 +38,8 @@ namespace Alma.Api.Sdk.Extractors
             {
                 studentEnrollments.students.FirstOrDefault(student => student.id == stud.id).Enrollment.ForEach(enroll =>
                 {
+                    //Changed this line to use stateId as StudentUniqueId instead of AlmaId
+                    //enroll.studentId = stud.stateId;
                     enroll.studentId = stud.id;
                     studentsSchoolAssociation.Add(enroll);
                 });

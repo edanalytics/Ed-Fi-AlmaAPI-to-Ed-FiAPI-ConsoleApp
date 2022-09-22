@@ -51,7 +51,18 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         private List<EdFiStudent> Transform(List<Student> srcStudents)
         {
             var EdfiStudents = new List<EdFiStudent>();
-            srcStudents.ForEach(x => EdfiStudents.Add(_studentsTransformer.TransformSrcToEdFi(x)));
+            //srcStudents.ForEach(x => EdfiStudents.Add(_studentsTransformer.TransformSrcToEdFi(x)));
+            foreach (var student in srcStudents)
+            {
+                if (student.stateId != null)
+                {
+                    EdfiStudents.Add(_studentsTransformer.TransformSrcToEdFi(student));
+                }
+                else
+                {
+                    _appLog.LogInformation($"INFO: Student with AlmaID: {student.id} skipped. Missing a stateID element.");
+                }
+            }
             return EdfiStudents;
         }
         private void Load(EdFiStudent student, string almaSchoolCode)

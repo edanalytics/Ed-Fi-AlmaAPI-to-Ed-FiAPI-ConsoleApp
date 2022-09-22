@@ -1,4 +1,5 @@
 using Alma.Api.Sdk.Models;
+using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,21 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         public EdFiStudentSchoolAttendanceEvent TransformSrcToEdFi(int schoolId, Attendance srcAttendance, List<Session> almaSessions)
         {
             var sessionName = _sessionNameTransformer.TransformSrcToEdFi(almaSessions, srcAttendance.schoolYearId, srcAttendance.date);
-            var studentReference = new EdFiStudentReference(srcAttendance.studentId);
+            //Use a helper function to translate the almaID to a StateId.
+            StudentTranslation st = new StudentTranslation();
+            Student studentResponse = StudentTranslation.GetStudentById(srcAttendance.studentId);
+            EdFiStudentReference studentReference = null;
+            //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
+            //This will not insert the student's information but an INFO has already been output for this student during the student posts.
+            if (studentResponse.stateId != null)
+            {
+                studentReference = new EdFiStudentReference(studentResponse.stateId);
+            }
+            else
+            {
+                studentReference = new EdFiStudentReference(srcAttendance.studentId);
+            }
+            //var studentReference = new EdFiStudentReference(srcAttendance.studentId);
             var sessionReference = new EdFiSessionReference(schoolId, srcAttendance.SchoolYear.endDate.Year, sessionName);
             var schoolReference = new EdFiSchoolReference(schoolId);
             return new EdFiStudentSchoolAttendanceEvent(null,

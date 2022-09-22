@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Alma.Api.Sdk.Models
@@ -36,6 +36,6 @@ namespace Alma.Api.Sdk.Models
     public class Credits
     {
         public bool trackCredits { get; set; }
-        public int defaultCredits { get; set; }
+        public float defaultCredits { get; set; }
     }
 }

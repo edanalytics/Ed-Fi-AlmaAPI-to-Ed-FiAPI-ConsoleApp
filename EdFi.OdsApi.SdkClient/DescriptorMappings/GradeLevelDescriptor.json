@@ -19,7 +19,7 @@
         },
         {
             "Src": "PK3",
-            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
         },
         {
             "Src": "PK4",
@@ -73,6 +73,10 @@
         {
             "Src": "12th",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Twelfth grade"
+        },
+        {
+            "Src": "12+",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Other"
         },
         {
             "Src": "default",

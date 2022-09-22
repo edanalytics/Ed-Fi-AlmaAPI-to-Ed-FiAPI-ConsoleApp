@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using System;
@@ -66,7 +66,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var edfiGradeLevels = new List<EdFiSchoolGradeLevel>();
             foreach (var agl in edfiStringDescriptors)
             {
-                edfiGradeLevels.Add(new EdFiSchoolGradeLevel(agl));
+                if (!edfiGradeLevels.Contains(new EdFiSchoolGradeLevel(agl))){
+                    edfiGradeLevels.Add(new EdFiSchoolGradeLevel(agl));
+                }
             }
             return edfiGradeLevels;
         }

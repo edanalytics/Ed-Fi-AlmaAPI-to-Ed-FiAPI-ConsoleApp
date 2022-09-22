@@ -1,4 +1,4 @@
-﻿using EdFi.AlmaToEdFi.Cmd.Model;
+using EdFi.AlmaToEdFi.Cmd.Model;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
@@ -26,7 +26,11 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor
                 var map = _gradeLevel.Mapping.SingleOrDefault(x => x.Src == agl);
                 if (map == null)
                     map = _gradeLevel.Mapping.SingleOrDefault(x => x.Src == "default");
-                edfiGradeLevels.Add(new EdFiCourseOfferedGradeLevel(map.Dest));
+                if (!edfiGradeLevels.Contains(new EdFiCourseOfferedGradeLevel(map.Dest)))
+                {
+                    edfiGradeLevels.Add(new EdFiCourseOfferedGradeLevel(map.Dest));
+                }
+                
             }
             return edfiGradeLevels;
         }

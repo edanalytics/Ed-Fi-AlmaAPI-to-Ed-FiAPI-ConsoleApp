@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using System;
@@ -20,7 +20,17 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         }
         public EdFiStudent TransformSrcToEdFi(Student srcStudent)
         {
-            return  new EdFiStudent(null, srcStudent.id, null, null, null, Convert.ToDateTime(srcStudent.dob), null, 
+            //Check to see if the Student DoB is null or empty. The code below will enter "1/1/0001" as the default value even when fed a null value.
+            //This is an issue because SQL rejects anything before 01/01/1753.
+            //This is attempted to be handeled inside of the constructor for student by checking if it's null. However, since we send it through Convert.ToDateTime the null value is converted to the default .NET value which is outside of the SQL range.
+            if (String.IsNullOrEmpty(srcStudent.dob))
+            {
+                srcStudent.dob = "9999-12-30";
+                Console.WriteLine($"INFO: Date of birth has been defaulted for (Alma)StudentID: {srcStudent.id} (edfi)StudentUniqueId: {srcStudent.stateId}. This is because the API is returning either a null or empty date of birth for this student.");
+            }
+            //Updated to use StateID instead of AlmaID for studentUniqueId
+
+            return  new EdFiStudent(null, srcStudent.stateId, null, null, null, Convert.ToDateTime(srcStudent.dob), null, 
                                     GetEdFiGenderDescriptors(srcStudent.gender), null, null, null, srcStudent.firstName,
                                     null, null, srcStudent.lastName, null, srcStudent.middleName);
         }
