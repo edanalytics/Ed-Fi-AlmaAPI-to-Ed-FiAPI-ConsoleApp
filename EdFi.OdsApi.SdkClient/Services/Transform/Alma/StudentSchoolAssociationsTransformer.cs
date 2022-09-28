@@ -8,7 +8,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
 {
     public interface IStudentSchoolAssociationsTransformer
     {
-        EdFiStudentSchoolAssociation TransformSrcToEdFi(int schoolId, Enrollment srcEnrollment);
+        EdFiStudentSchoolAssociation TransformSrcToEdFi(int schoolId, string schoolYearId, Enrollment srcEnrollment);
     }
     public class StudentSchoolAssociationsTransformer : IStudentSchoolAssociationsTransformer
     {
@@ -17,7 +17,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         {
             _descriptorMappingService = descriptorMappingService;
         }
-        public EdFiStudentSchoolAssociation TransformSrcToEdFi(int schoolId, Enrollment srcEnrollment)
+        public EdFiStudentSchoolAssociation TransformSrcToEdFi(int schoolId, string schoolYearId, Enrollment srcEnrollment)
         {
             var schoolReference = new EdFiSchoolReference(schoolId, null);
             //Use a helper function to translate the almaID to a StateId.
@@ -34,12 +34,22 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             {
                 studentReference = new EdFiStudentReference(srcEnrollment.studentId);
             }
-            
+
+            int schoolYearEnd = int.Parse(StudentTranslation.GetSchoolYear().Substring(5, 4));
+            EdFiSchoolYearTypeReference schoolYearTypeReference = new EdFiSchoolYearTypeReference(schoolYearEnd);
+
+
             //var studentReference = new EdFiStudentReference(srcEnrollment.studentId, null);
-            return new EdFiStudentSchoolAssociation(null,Convert.ToDateTime(srcEnrollment.date) , null, null, null, schoolReference, null, 
+            return new EdFiStudentSchoolAssociation(null,Convert.ToDateTime(srcEnrollment.date) , null, null, null, schoolReference, schoolYearTypeReference, 
                 studentReference, null, null, null,GetEdFiGradeLevelDescriptors("default"));
 
         }
+
+        public EdFiStudentSchoolAssociation TransformSrcToEdFi(int schoolId, Enrollment srcEnrollment)
+        {
+            throw new NotImplementedException();
+        }
+
         private string  GetEdFiGradeLevelDescriptors(string  scrGradelevel)
         {
             return _descriptorMappingService.MappAlmaToEdFiDescriptor("GradeLevelDescriptor", scrGradelevel);

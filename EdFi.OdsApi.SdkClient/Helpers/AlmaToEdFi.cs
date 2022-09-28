@@ -1,6 +1,8 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.OdsApi.Sdk.Models.Resources;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EdFi.AlmaToEdFi.Cmd.Helpers
 {
@@ -102,6 +104,13 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
                 }
             }
             return edfiGradeLevels;
+        }
+
+        public static string RemoveWhitespace(this string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
         }
 
     }

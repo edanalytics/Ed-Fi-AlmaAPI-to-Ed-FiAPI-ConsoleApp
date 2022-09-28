@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using System.Collections.Generic;
 using System.Linq;

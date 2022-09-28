@@ -49,15 +49,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             // TODO: Change to ALMA once we have access to their API.
             // Extract - Get students School from the source API
             var almaStudentSchoolResponse = _apiAlma.StudentSchool.Extract(almaSchoolCode,schoolYearId);
-            Transform(stateSchoolId,almaStudentSchoolResponse).ForEach(x => Load(x, almaSchoolCode));
+            Transform(stateSchoolId, schoolYearId, almaStudentSchoolResponse).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($"");
             _appLog.LogInformation($"Processed {almaStudentSchoolResponse.Count} Student School Association.");
         }
 
-        private List<EdFiStudentSchoolAssociation> Transform(int schoolId,List<Enrollment> srcStudentEnrollments)
+        private List<EdFiStudentSchoolAssociation> Transform(int schoolId, string schoolYearId, List<Enrollment> srcStudentEnrollments)
         {
             var EdfiStudentEnroll = new List<EdFiStudentSchoolAssociation>();
-            srcStudentEnrollments.ForEach(x => EdfiStudentEnroll.Add(_studentSchoolAssociationsTransformer.TransformSrcToEdFi(schoolId,x)));
+            srcStudentEnrollments.ForEach(x => EdfiStudentEnroll.Add(_studentSchoolAssociationsTransformer.TransformSrcToEdFi(schoolId, schoolYearId, x)));
             return EdfiStudentEnroll;
         }
 

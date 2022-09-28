@@ -1,4 +1,4 @@
-﻿
+
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor;
 using EdFi.OdsApi.Sdk.Models.Resources;
@@ -28,12 +28,18 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var studentAddresses = new List<EdFiStudentEducationOrganizationAssociationAddress>();
             srcStudent.addresses.ForEach(address =>
             {
-                studentAddresses.Add(new EdFiStudentEducationOrganizationAssociationAddress(GetEdFiAddressTypeDescriptors(address.type.FirstOrDefault()),
-                               GetEdFiStateSAbbreviationDescriptors( _removeWhitespaceTransformer.TransformSrcToEdFi(address.state)), 
-                               _removeWhitespaceTransformer.TransformSrcToEdFi(address.city), 
-                               _removeWhitespaceTransformer.TransformSrcToEdFi(address.zip), 
+                EdFiStudentEducationOrganizationAssociationAddress eAddress = new EdFiStudentEducationOrganizationAssociationAddress(GetEdFiAddressTypeDescriptors(address.type.FirstOrDefault()),
+                               GetEdFiStateSAbbreviationDescriptors(_removeWhitespaceTransformer.TransformSrcToEdFi(address.state)),
+                               _removeWhitespaceTransformer.TransformSrcToEdFi(address.city),
+                               _removeWhitespaceTransformer.TransformSrcToEdFi(address.zip),
                                _removeWhitespaceTransformer.TransformSrcToEdFi(address.address),
-                               null, null, null, null, null, null, null, null, _removeWhitespaceTransformer.TransformSrcToEdFi(address.country)));
+                               null, null, null, null, null, null, null, null, _removeWhitespaceTransformer.TransformSrcToEdFi(address.country));
+
+                if (!studentAddresses.Contains(eAddress))
+                {
+                    studentAddresses.Add(eAddress);
+                }
+                
 
             });
             var studentPhones = new List<EdFiStudentEducationOrganizationAssociationTelephone>();

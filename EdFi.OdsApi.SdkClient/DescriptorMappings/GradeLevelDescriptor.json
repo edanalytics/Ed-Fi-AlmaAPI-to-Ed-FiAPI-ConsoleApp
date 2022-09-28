@@ -6,6 +6,10 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Kindergarten"
         },
         {
+            "Src": "0",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Kindergarten"
+        },
+        {
             "Src": "PK",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
         },
@@ -25,9 +29,12 @@
             "Src": "PK4",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
         },
-
         {
             "Src": "1st",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#First grade"
+        },
+        {
+            "Src": "1",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#First grade"
         },
         {
@@ -35,7 +42,15 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Second grade"
         },
         {
+            "Src": "2",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Second grade"
+        },
+        {
             "Src": "3rd",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Third grade"
+        },
+        {
+            "Src": "3",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Third grade"
         },
         {
@@ -43,7 +58,15 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Fourth grade"
         },
         {
+            "Src": "4",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Fourth grade"
+        },
+        {
             "Src": "5th",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Fifth grade"
+        },
+        {
+            "Src": "5",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Fifth grade"
         },
         {
@@ -51,7 +74,15 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Sixth grade"
         },
         {
+            "Src": "6",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Sixth grade"
+        },
+        {
             "Src": "7th",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Seventh grade"
+        },
+        {
+            "Src": "7",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Seventh grade"
         },
         {
@@ -59,7 +90,15 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Eighth grade"
         },
         {
+            "Src": "8",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Eighth grade"
+        },
+        {
             "Src": "9th",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Ninth grade"
+        },
+        {
+            "Src": "9",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Ninth grade"
         },
         {
@@ -67,11 +106,23 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Tenth grade"
         },
         {
+            "Src": "10",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Tenth grade"
+        },
+        {
             "Src": "11th",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Eleventh grade"
         },
         {
+            "Src": "11",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Eleventh grade"
+        },
+        {
             "Src": "12th",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Twelfth grade"
+        },
+        {
+            "Src": "12",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Twelfth grade"
         },
         {

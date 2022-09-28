@@ -33,7 +33,7 @@ namespace Alma.Api.Sdk.Extractors
 
             schoolsResponse.response.addresses = GetSchoolAddresses(almaSchoolCode);
             schoolsResponse.response.phones = GetSchoolPhones(almaSchoolCode);
-            schoolsResponse.response.GradeLevels = GetGradeLevels(almaSchoolCode,   schoolYearId = "");
+            schoolsResponse.response.GradeLevels = GetGradeLevels(almaSchoolCode, schoolYearId);
             return schoolsResponse;
         }
 

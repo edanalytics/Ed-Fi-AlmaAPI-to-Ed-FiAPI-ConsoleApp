@@ -72,6 +72,14 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
             return student;
         }
 
+        public static string GetSchoolYear()
+        {
+            var config = GetConfiguration().Build();
+            var settings = config.GetSection("Settings").Get<AppSettings>();
+
+            return settings.AlmaAPI.Connections.Alma.SourceConnection.SchoolYearFilter;
+        }
+
         public static void buildCache()
         {
             var config = GetConfiguration().Build();
@@ -95,20 +103,6 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 StudentsResponse studentsResponse = JsonConvert.DeserializeObject<StudentsResponse>(response.Content);
-                //Dictionary<string, string> idMapping = new Dictionary<string, string>();
-                //foreach (Student s in studentsResponse.response)
-                //{
-                //    if (s.stateId != null)
-                //    {
-                //        idMapping.Add(s.id, s.stateId);
-                //    }
-                //    else
-                //    {
-                //        idMapping.Add(s.id, s.id);
-                //    }
-                //    cache.Set("idMapping", idMapping);
-
-                //}
 
                 cache.Set("StudentsTranslationData", studentsResponse);
             }
