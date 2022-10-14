@@ -16,7 +16,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         private readonly ILeadingTrailingWhitespaceTransformer _removeWhitespaceTransformer;
         private readonly IDescriptorMappingService _descriptorMappingService;
         public StudentEducationOrganizationAssociationTransformer(
-            IDescriptorMappingService descriptorMappingService, 
+            IDescriptorMappingService descriptorMappingService,
             ILeadingTrailingWhitespaceTransformer removeWhitespaceTransformer
             )
         {
@@ -39,7 +39,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
                 {
                     studentAddresses.Add(eAddress);
                 }
-                
+
 
             });
             var studentPhones = new List<EdFiStudentEducationOrganizationAssociationTelephone>();
@@ -49,8 +49,11 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
 
             });
             var studentEmails = new List<EdFiStudentEducationOrganizationAssociationElectronicMail>();
-            srcStudent.emails.ForEach(email => { studentEmails.Add(new EdFiStudentEducationOrganizationAssociationElectronicMail(GetEdFiElectronicMailTypeDescriptors("default"),
-                                                                                                                                    email.emailAddress, null, null)); });
+            srcStudent.emails.ForEach(email =>
+            {
+                studentEmails.Add(new EdFiStudentEducationOrganizationAssociationElectronicMail(GetEdFiElectronicMailTypeDescriptors("default"),
+                                                                                                   email.emailAddress, null, null));
+            });
             var educationOrganizationReference = new EdFiEducationOrganizationReference(schoolId);
             //Updated to use srcStudent.stateID instead of srcStudent.id
             EdFiStudentReference studentReference = null;
@@ -69,16 +72,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             if (studentIdentificationSystem.Count == 0)
                 studentIdentificationSystem = null;
             return new EdFiStudentEducationOrganizationAssociation(null,
-                                                                    educationOrganizationReference, 
-                                                                    studentReference, 
-                                                                    studentAddresses, null, null, null, null, 
+                                                                    educationOrganizationReference,
+                                                                    studentReference,
+                                                                    studentAddresses, null, null, null, null,
                                                                     studentEmails,
-                                                                    GetEdFiHispanicLatino(srcStudent.ethnicity), 
-                                                                    null, null,null, null, null, null, null, null, null, null, null, null, null,
-                                                                    GetEdFiRaceDescriptors( srcStudent.race),
+                                                                    GetEdFiHispanicLatino(srcStudent.ethnicity),
+                                                                    null, null, null, null, null, null, null, null, null, null, null, null, null,
+                                                                    GetEdFiRaceDescriptors(srcStudent.race),
                                                                     GetEdFiGenderDescriptors(srcStudent.gender), null, studentIdentificationSystem,
-                                                                    null, studentPhones,  null,null);
-            
+                                                                    null, studentPhones, null, null);
+
 
         }
         public bool GetEdFiHispanicLatino(string srcHispanicLatino)
@@ -113,12 +116,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         {
             var StudentEducationOrganizationAssociationRace = new List<EdFiStudentEducationOrganizationAssociationRace>();
 
-            foreach (var race in srcRace)
+            if (srcRace != null)
             {
-                var edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("RaceDescriptor", race);
-                if (edfiStringDescriptors == null)
-                    edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("RaceDescriptor", "default");
-                StudentEducationOrganizationAssociationRace.Add(new EdFiStudentEducationOrganizationAssociationRace(edfiStringDescriptors));
+                foreach (var race in srcRace)
+                {
+                    var edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("RaceDescriptor", race);
+                    if (edfiStringDescriptors == null)
+                        edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("RaceDescriptor", "default");
+                    StudentEducationOrganizationAssociationRace.Add(new EdFiStudentEducationOrganizationAssociationRace(edfiStringDescriptors));
+                }
             }
             return StudentEducationOrganizationAssociationRace;
         }

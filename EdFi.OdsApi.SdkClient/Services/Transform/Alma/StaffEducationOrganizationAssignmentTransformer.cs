@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor;
 using EdFi.OdsApi.Sdk.Models.Resources;
 namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
@@ -23,6 +23,8 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
 
             var stafftEmploymentReference = new EdFiStaffEducationOrganizationEmploymentAssociationReference(schoolId,
                 GetEdFiEmployeeStatusDescriptors(srcStaff.status), srcStaff.created, srcStaff.id);
+
+            //srcStaff.Rol = Helpers.StudentTranslation.GetStaffUserRole(schoolId, srcStaff.roleId).name;
 
             return new EdFiStaffEducationOrganizationAssignmentAssociation(null, srcStaff.created,
                 GetEdFiStaffClassiificationDescriptors(srcStaff.Rol), null, organizationReference, stafftEmploymentReference , stafftReference);

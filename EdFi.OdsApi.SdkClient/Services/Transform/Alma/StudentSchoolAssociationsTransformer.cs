@@ -38,10 +38,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             int schoolYearEnd = int.Parse(StudentTranslation.GetSchoolYear().Substring(5, 4));
             EdFiSchoolYearTypeReference schoolYearTypeReference = new EdFiSchoolYearTypeReference(schoolYearEnd);
 
+            GradeLevel gradeLevel = StudentTranslation.GetStudentGradeLevel(srcEnrollment.studentId, schoolYearId, srcEnrollment.school);
+            if (gradeLevel.gradeLevelAbbr == null)
+            {
+
+            }
+
 
             //var studentReference = new EdFiStudentReference(srcEnrollment.studentId, null);
             return new EdFiStudentSchoolAssociation(null,Convert.ToDateTime(srcEnrollment.date) , null, null, null, schoolReference, schoolYearTypeReference, 
-                studentReference, null, null, null,GetEdFiGradeLevelDescriptors("default"));
+                studentReference, null, null, null,GetEdFiGradeLevelDescriptors(gradeLevel.gradeLevelAbbr));
 
         }
 
