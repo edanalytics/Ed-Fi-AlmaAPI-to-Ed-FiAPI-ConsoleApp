@@ -85,16 +85,16 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
 
         public static UserRole GetStaffUserRole(int schoolId, string roleId)
         {
-            UserRoleResponse checkCache = (UserRoleResponse)cache.Get(String.Format($"UserRole"));
+            StaffRolResponse checkCache = (StaffRolResponse)cache.Get(String.Format($"UserRole"));
             UserRole userRole = new UserRole();
 
             if (checkCache == null)
             {
                 buildUserRoleCache();
-                checkCache = (UserRoleResponse)cache.Get(String.Format($"UserRole"));
+                checkCache = (StaffRolResponse)cache.Get(String.Format($"UserRole"));
             }
 
-            foreach (UserRole r in checkCache.userRoles)
+            foreach (UserRole r in checkCache.response.userRoles)
             {
                 if (r.id == roleId)
                 {
@@ -207,10 +207,10 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
             var response = client.Get(request);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                UserRoleResponse userRoleResponse = JsonConvert.DeserializeObject<UserRoleResponse>(response.Content);
+                StaffRolResponse staffRolResponse = JsonConvert.DeserializeObject<StaffRolResponse>(response.Content);
 
 
-                cache.Set(String.Format($"UserRole"), userRoleResponse);
+                cache.Set(String.Format($"UserRole"), staffRolResponse);
             }
         }
 

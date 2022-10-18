@@ -24,7 +24,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var stafftEmploymentReference = new EdFiStaffEducationOrganizationEmploymentAssociationReference(schoolId,
                 GetEdFiEmployeeStatusDescriptors(srcStaff.status), srcStaff.created, srcStaff.id);
 
-            //srcStaff.Rol = Helpers.StudentTranslation.GetStaffUserRole(schoolId, srcStaff.roleId).name;
+            srcStaff.Rol = Helpers.StudentTranslation.GetStaffUserRole(schoolId, srcStaff.roleId).name;
 
             return new EdFiStaffEducationOrganizationAssignmentAssociation(null, srcStaff.created,
                 GetEdFiStaffClassiificationDescriptors(srcStaff.Rol), null, organizationReference, stafftEmploymentReference , stafftReference);
@@ -39,7 +39,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         }
         public string GetEdFiStaffClassiificationDescriptors(string srcRol)
         {
-            var edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("EmploymentStatusDescriptor", srcRol);
+            var edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("StaffClassificationDescriptor", srcRol);
             if (edfiStringDescriptors == null)
                 edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("StaffClassificationDescriptor", "default");
             return edfiStringDescriptors;
