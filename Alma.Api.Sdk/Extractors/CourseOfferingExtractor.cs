@@ -20,44 +20,35 @@ namespace Alma.Api.Sdk.Extractors
         private readonly RestClient _client;
         private readonly ICoursesExtractor _coursesExtractor;
         private readonly ILogger<CourseOfferingExtractor> _logger;
+        private readonly ISectionsExtractor _sectionsExtractor;
 
         public CourseOfferingExtractor(IAlmaRestClientConfigurationProvider client,
                                        ICoursesExtractor coursesExtractor,
+                                       ISectionsExtractor sectionsExtractor,
                                        ILogger<CourseOfferingExtractor> logger)
         {
             _client = client.GetRestClient();
             _coursesExtractor = coursesExtractor;
             _logger = logger;
+            _sectionsExtractor = sectionsExtractor;
         }
         public List<Course> Extract(string almaSchoolCode, string schoolYearId = "")
         {
             // Alma courses could be duplicated, so lets reduce the set by just getting the distinct ones.
             var almaCourses = _coursesExtractor.Extract(almaSchoolCode, schoolYearId)
-                                .GroupBy(x => new { x.schoolYearId, x.id})                               
-                                .Select(g=>g.First())
+                                .GroupBy(x => new { x.schoolYearId, x.id })
+                                .Select(g => g.First())
                                 .ToList();
-            //Exists any filter for School Year????
-            if (!string.IsNullOrEmpty(schoolYearId))
-            {
-                schoolYearId = $"?schoolYearId={schoolYearId}";
-            }
-            // We are getting the Classes for alma and deriving the courses from there.
-            // This way we know for a fact that the course is being offered.
-            var request = new RestRequest($"v2/{almaSchoolCode}/classes{schoolYearId}", DataFormat.Json);
-            var response = _client.Get(request);
-            var classesResponse = new Utf8JsonSerializer().Deserialize<SectionsResponse>(response);
-            
-            Console.WriteLine($"Processing Courses from {classesResponse.response.Count} Classes.");
-
+            var almaSections = _sectionsExtractor.Extract(almaSchoolCode, schoolYearId);
             var courseList = new List<Course>();
-            classesResponse.response.ForEach(c =>
+            almaSections.ForEach(classItem =>
             {
-                var courses = almaCourses.Where(ac => ac.id == c.courseId && ac.schoolYearId==c.schoolYearId);
-
-                if (courses.Count() <= 0)
-                    _logger.LogWarning($"{almaSchoolCode}/courses/{c.courseId}  :  No Courses exist for courseId:{c.courseId} into the class {c.id}- {c.name}, School Year:{Convert.ToDateTime(c.SchoolYear).Year}");
-                else
-                    courseList.AddRange(courses);
+                var courseItem = new Course();
+                courseItem.almaClassId = classItem.id;
+                courseItem = classItem.Course;
+                //We need to know the grading periods to get the session name
+                courseItem.gradingPeriods = classItem.gradingPeriods;
+                courseList.Add(courseItem);
             });
             return courseList;
         }

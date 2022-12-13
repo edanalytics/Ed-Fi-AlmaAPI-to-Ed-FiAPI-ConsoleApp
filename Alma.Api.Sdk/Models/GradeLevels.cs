@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +13,7 @@ namespace Alma.Api.Sdk.Models
 public class GradeLevel
 {
     public string id { get; set; }
+    public string gradeLevelId { get; set; }
     public string name { get; set; }
     public string gradeLevelAbbr { get; set; }
     public string equivalent { get; set; }

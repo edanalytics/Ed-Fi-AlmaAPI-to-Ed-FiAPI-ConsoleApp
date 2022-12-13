@@ -62,7 +62,6 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             {
                 if (_apiEdFi.NeedsRefreshToken())
                     _apiEdFi.RefreshToken();
-
                 var result = _apiEdFi.Courses.PostCourseWithHttpInfo(resource);
                 _exceptionHandler.HandleHttpCode(result);
                 

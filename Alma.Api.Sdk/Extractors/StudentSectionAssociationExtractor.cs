@@ -24,7 +24,7 @@ namespace Alma.Api.Sdk.Extractors
         private readonly ISectionsExtractor _sectionsExtractor;
         private readonly ICoursesExtractor _coursesExtractor;
         private readonly ISchoolYearsExtractor _schoolYearsExtractor;
-        private readonly IStudentsExtractor _studentsExtractor;        
+        private readonly IStudentsExtractor _studentsExtractor;
         private readonly ILogger<StudentSectionAssociationExtractor> _logger;
         public StudentSectionAssociationExtractor(IAlmaRestClientConfigurationProvider client,
                                                   ISectionsExtractor sectionsExtractor,
@@ -42,7 +42,7 @@ namespace Alma.Api.Sdk.Extractors
         }
         public List<StudentSectionResponse> Extract(string almaSchoolCode, string schoolYearId = "")
         {
-            var almaSections = _sectionsExtractor.Extract(almaSchoolCode,schoolYearId);
+            var almaSections = _sectionsExtractor.Extract(almaSchoolCode, schoolYearId);
             var almaSchoolYears = _schoolYearsExtractor.Extract(almaSchoolCode);
             var almaStudents = _studentsExtractor.Extract(almaSchoolCode);
             // Alma courses could be duplicated, so lets reduce the set by just getting the distinct ones.
@@ -101,6 +101,8 @@ namespace Alma.Api.Sdk.Extractors
                 {
                     clas.courseId = almaSections.FirstOrDefault(x => x.id == clas.id).courseId;
                     clas.Course = almaSections.FirstOrDefault(x => x.id == clas.id && x.schoolYearId == clas.schoolYearId).Course;
+                    //We need the grading periods to get the session
+                    clas.gradingPeriods = almaSections.FirstOrDefault(x => x.id == clas.id && x.schoolYearId == clas.schoolYearId).gradingPeriods;
                 }
             });
 

@@ -1,3 +1,4 @@
+using Alma.Api.Sdk.Extractors;
 using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
@@ -18,14 +19,19 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         private IEdFiApi _apiEdFi;
         private IAlmaApi _apiAlma;
         private readonly ILogger _appLog;
-        
-        
-        
+
+
+
         private readonly ILoadExceptionHandler _exceptionHandler;
         private readonly IStudentSchoolAssociationsTransformer _studentSchoolAssociationsTransformer;
+        private readonly IStudentsGradeLevelExtractor _StudentsGradeLevelExtractor;
+        private readonly IGradeLevelsExtractor _gradeLevelsExtractor;
+
         public StudentSchoolAssociationsProcessor(IAlmaApi almaApi,
                                                     IEdFiApi edFiApi,
                                                     ILoggerFactory logger,
+                                                    IStudentsGradeLevelExtractor StudentsGradeLevelExtractor,
+                                                    IGradeLevelsExtractor GradeLevelsExtractor,
                                                     IStudentSchoolAssociationsTransformer studentSchoolAssociationsTransformer,
                                                     ILoadExceptionHandler exceptionHandler)
         {
@@ -33,6 +39,8 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
             _apiAlma = almaApi;
             _exceptionHandler = exceptionHandler;
             _studentSchoolAssociationsTransformer = studentSchoolAssociationsTransformer;
+            _StudentsGradeLevelExtractor = StudentsGradeLevelExtractor;
+            _gradeLevelsExtractor = GradeLevelsExtractor;
             _appLog = logger.CreateLogger("Student School Associations Processor");
         }
 
@@ -41,24 +49,24 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
         public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Student School Associations from School({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
+            ProcessPosts(almaSchoolCode, stateSchoolId, schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId, string schoolYearId)
         {
             // TODO: Change to ALMA once we have access to their API.
             // Extract - Get students School from the source API
-            var almaStudentSchoolResponse = _apiAlma.StudentSchool.Extract(almaSchoolCode,schoolYearId);
-            Transform(stateSchoolId, schoolYearId, almaStudentSchoolResponse).ForEach(x => Load(x, almaSchoolCode));
+            //var almaStudentSchoolResponse = _apiAlma.StudentSchool.Extract(almaSchoolCode,schoolYearId);
+            var studentsGradeLevels = _StudentsGradeLevelExtractor.Extract(almaSchoolCode, schoolYearId);
+            var gradeLevels = _gradeLevelsExtractor.Extract(almaSchoolCode, schoolYearId);
+            Transform(stateSchoolId, studentsGradeLevels, gradeLevels).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine($"");
-            _appLog.LogInformation($"Processed {almaStudentSchoolResponse.Count} Student School Association.");
+            _appLog.LogInformation($"Processed {studentsGradeLevels.students.Count} Student School Association.");
         }
 
-        private List<EdFiStudentSchoolAssociation> Transform(int schoolId, string schoolYearId, List<Enrollment> srcStudentEnrollments)
+        private List<EdFiStudentSchoolAssociation> Transform(int schoolId, StudentsGradeLevels studentGradeLevels, List<GradeLevel> gradeLevels)
         {
-            var EdfiStudentEnroll = new List<EdFiStudentSchoolAssociation>();
-            srcStudentEnrollments.ForEach(x => EdfiStudentEnroll.Add(_studentSchoolAssociationsTransformer.TransformSrcToEdFi(schoolId, schoolYearId, x)));
-            return EdfiStudentEnroll;
+            return _studentSchoolAssociationsTransformer.TransformSrcToEdFi(schoolId, studentGradeLevels, gradeLevels);
         }
 
         private void Load(EdFiStudentSchoolAssociation resource, string almaSchoolCode)
@@ -76,7 +84,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.AlmaAPI
                 {
                     ConsoleHelpers.WriteTextReplacingLastLine($"{RecordIndex} Student Enrollments registered(Last Student Id registered {resource.StudentReference.StudentUniqueId})");
                 }
-                
+
             }
             catch (Exception ex)
             {

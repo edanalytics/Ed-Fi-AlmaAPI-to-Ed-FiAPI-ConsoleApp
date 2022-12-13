@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Extractors.Alma;
+using Alma.Api.Sdk.Extractors.Alma;
 using Alma.Api.Sdk.Models;
 using RestSharp;
 using RestSharp.Serializers.Utf8Json;
@@ -23,7 +23,6 @@ namespace Alma.Api.Sdk.Extractors
             var response = _client.Get(request);
             //Deserialize JSON data
             var enrollmentResponse = new Utf8JsonSerializer().Deserialize<Response<StudentsEnrollment>>(response);
-
             return enrollmentResponse.response;
         }
     }
