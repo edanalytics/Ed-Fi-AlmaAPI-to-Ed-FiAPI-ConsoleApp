@@ -21,29 +21,35 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var sectionAssociationList = new List<EdFiStudentSectionAssociation>();
             foreach (var classes in srcSectionAssociation.classes)
             {
-                if (classes.Course != null)
+                foreach (var term in classes.gradingPeriods)
                 {
-                    var courseCode = string.IsNullOrEmpty(classes.Course.code) ? classes.Course.id : classes.Course.code;
-                    var sessionName = _sessionNameTransformer.TransformSrcToEdFi(almaSessions, classes.Course.schoolYearId, classes.Course.effectiveDate);
-                    var sectionReference = new EdFiSectionReference(courseCode, schoolId, classes.SchoolYear.endDate.Year, classes.id, sessionName, null);
-                    //Use a helper function to translate the almaID to a StateId.
-                    StudentTranslation st = new StudentTranslation();
-                    Student studentResponse = StudentTranslation.GetStudentById(srcSectionAssociation.StudentId);
-                    EdFiStudentReference studentReference = null;
-                    //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
-                    //This will not insert the student's information but an INFO has already been output for this student during the student posts.
-                    if (studentResponse.stateId != null)
+                    if (classes.Course != null)
                     {
-                        studentReference = new EdFiStudentReference(studentResponse.stateId);
+                        var courseCode = string.IsNullOrEmpty(classes.Course.code) ? classes.Course.id : classes.Course.code;
+                        //Get the correct Session name
+                        var sessionName = _sessionNameTransformer.TransformSrcToEdFi(term, almaSessions);
+                        var sectionReference = new EdFiSectionReference(courseCode, schoolId, classes.SchoolYear.endDate.Year, classes.id, sessionName, null);
+
+                        //Use a helper function to translate the almaID to a StateId.
+                        StudentTranslation st = new StudentTranslation();
+                        Student studentResponse = StudentTranslation.GetStudentById(srcSectionAssociation.StudentId);
+                        EdFiStudentReference studentReference = null;
+                        //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
+                        //This will not insert the student's information but an INFO has already been output for this student during the student posts.
+                        if (studentResponse.stateId != null)
+                        {
+                            studentReference = new EdFiStudentReference(studentResponse.stateId);
+                        }
+                        else
+                        {
+                            studentReference = new EdFiStudentReference(srcSectionAssociation.StudentId);
+                        }
+
+                        sectionAssociationList.Add(new EdFiStudentSectionAssociation(null, classes.SchoolYear.startDate, sectionReference, studentReference));
                     }
-                    else
-                    {
-                        studentReference = new EdFiStudentReference(srcSectionAssociation.StudentId);
-                    }
-                    //Replaced by above method to get StateId as StudentUniqueId
-                    //var studentReference = new EdFiStudentReference(srcSectionAssociation.StudentId);
-                    sectionAssociationList.Add(new EdFiStudentSectionAssociation(null, classes.SchoolYear.startDate, sectionReference, studentReference));
+
                 }
+
             }
             return sectionAssociationList;
         }

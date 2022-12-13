@@ -9,7 +9,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
     {
         List<EdFiSection> TransformSrcToEdFi(int schoolId, List<Section> almaSection, List<Session> almaSessions);
     }
-    public class SectionTransformer: ISectionTransformer
+    public class SectionTransformer : ISectionTransformer
     {
         private readonly ISessionNameTransformer _sessionNameTransformer;
         public SectionTransformer(ISessionNameTransformer sessionNameTransformer)
@@ -18,12 +18,22 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
         }
         public List<EdFiSection> TransformSrcToEdFi(int schoolId, List<Section> almaSection, List<Session> almaSessions)
         {
-            return almaSection.Select(aSec =>
-                new EdFiSection(null, aSec.id,
-                    new EdFiCourseOfferingReference(string.IsNullOrEmpty(aSec.Course.code) ? aSec.Course.id : aSec.Course.code, schoolId, aSec.SchoolYear.endDate.Year, 
-                        _sessionNameTransformer.TransformSrcToEdFi(almaSessions, aSec.schoolYearId, aSec.Course.effectiveDate)),
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, aSec.name)
-            ).ToList();
+            var edfiSecions = new List<EdFiSection>();
+            foreach (var section in almaSection)
+            {
+                //The same class could exist in diferent periods
+                foreach (var term in section.gradingPeriods)
+                {
+                    var courseCode = string.IsNullOrEmpty(section.Course.code) ? section.Course.id : section.Course.code;
+                    edfiSecions.Add(new EdFiSection(null, section.id,
+                    new EdFiCourseOfferingReference(courseCode, schoolId, section.SchoolYear.endDate.Year,
+                       _sessionNameTransformer.TransformSrcToEdFi(term, almaSessions)),
+                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, section.name));
+
+                }
+
+            }
+            return edfiSecions;
         }
     }
 }

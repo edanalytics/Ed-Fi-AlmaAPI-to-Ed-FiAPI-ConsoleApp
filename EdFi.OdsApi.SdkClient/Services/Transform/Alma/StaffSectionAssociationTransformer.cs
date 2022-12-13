@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.AlmaToEdFi.Cmd.Helpers;
 using EdFi.AlmaToEdFi.Cmd.Services.Transform.Descriptor;
 using EdFi.OdsApi.Sdk.Models.Resources;
@@ -32,33 +32,39 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             {
                 if (classes.Course != null)
                 {
-                    if (string.IsNullOrEmpty (classes.endDate))
+                    if (string.IsNullOrEmpty(classes.endDate))
                     {
-                        _logger.LogWarning( $"The class with id { classes.id} is missing startDate or endDate   /staff/{ srcSectionAssociation.StaffId}/ classes");                         
+                        _logger.LogWarning($"The class with id {classes.id} is missing startDate or endDate   /staff/{srcSectionAssociation.StaffId}/ classes");
                     }
                     else
                     {
-                        var Rol = userRoles.Where(r => r.id == srcSectionAssociation.roleId).FirstOrDefault().name;
-                        var courseCode = string.IsNullOrEmpty(classes.Course.code) ? classes.Course.id : classes.Course.code;
-                        var sessionName = _sessionNameTransformer.TransformSrcToEdFi(almaSessions, classes.Course.schoolYearId, classes.Course.effectiveDate);
-                        var sectionReference = new EdFiSectionReference(courseCode, schoolId, Convert.ToDateTime(classes.Course.SchoolYear.endDate).Year, classes.id, sessionName, null);
-                        var staffReference = new EdFiStaffReference(srcSectionAssociation.StaffId);
-                        sectionAssociationList.Add(new EdFiStaffSectionAssociation(null, sectionReference, staffReference, Convert.ToDateTime(classes.startDate),
-                            GetEdfiClassroomPositionDescriptors(Rol)));
+                        foreach (var term in classes.gradingPeriods)
+                        {
+                            var Rol = userRoles.Where(r => r.id == srcSectionAssociation.roleId).FirstOrDefault().name;
+                            var courseCode = string.IsNullOrEmpty(classes.Course.code) ? classes.Course.id : classes.Course.code;
+                            //Get the correct Session name
+                            var sessionName = _sessionNameTransformer.TransformSrcToEdFi(term, almaSessions);
+                            var sectionReference = new EdFiSectionReference(courseCode, schoolId, Convert.ToDateTime(classes.Course.SchoolYear.endDate).Year, classes.id, sessionName, null);
+                            var staffReference = new EdFiStaffReference(srcSectionAssociation.StaffId);
+                            sectionAssociationList.Add(new EdFiStaffSectionAssociation(null, sectionReference, staffReference, Convert.ToDateTime(classes.startDate),
+                                GetEdfiClassroomPositionDescriptors(Rol)));
+                        }
+
+
 
                     }
                 }
-               
+
             }
             return sectionAssociationList;
         }
 
-        private string  GetEdfiClassroomPositionDescriptors(string srcClassroomPosition)
+        private string GetEdfiClassroomPositionDescriptors(string srcClassroomPosition)
         {
             var edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("ClassroomPositionDescriptor", srcClassroomPosition);
             if (edfiStringDescriptors == null)
                 edfiStringDescriptors = _descriptorMappingService.MappAlmaToEdFiDescriptor("ClassroomPositionDescriptor", "Teacher");
-            return  edfiStringDescriptors;
+            return edfiStringDescriptors;
         }
     }
-} 
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Alma.Api.Sdk.Models
@@ -28,6 +28,7 @@ namespace Alma.Api.Sdk.Models
         public List<Phone> phones { get; set; }
         public List<Email> emails { get; set; }
         public List<Enrollment> Enrollment { get; set; }
+        public List<GradeLevel> GradeLevels { get; set; }
         public ProgramsResponse Programs { get; set; }
         public List<object> externalIds { get; set; }
         public DateTime created { get; set; }

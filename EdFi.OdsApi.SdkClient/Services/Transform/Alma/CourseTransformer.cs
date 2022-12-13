@@ -23,7 +23,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var educationOrganizationReference = new EdFiEducationOrganizationReference(schoolId, null);
             var courseIdentificationCodes = GetEdFiCourseIdentificationCodeDescriptors(srcCourse.id);
             var courseCode = string.IsNullOrEmpty(srcCourse.code) ? srcCourse.id : srcCourse.code;
-            return new EdFiCourse(null, courseCode.Replace(" ", string.Empty), courseIdentificationCodes, educationOrganizationReference,
+            return new EdFiCourse(null, courseCode, courseIdentificationCodes, educationOrganizationReference,
                                     GetEdFiAdemicSubjectDescriptors(srcCourse.Subjects.FirstOrDefault().name),
                                     null, null, null, null, null, srcCourse.name, null, null, null, null, null, null, null, null, null, null, null, null,1,
                                    GetEdFiGradeLevelDescriptors(srcCourse.GradeLevels), null, null);

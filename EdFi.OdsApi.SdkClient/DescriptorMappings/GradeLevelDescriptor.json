@@ -26,6 +26,10 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
         },
         {
+            "Src": "PS",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
+        },
+        {
             "Src": "PK4",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
         },
@@ -94,6 +98,10 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Eighth grade"
         },
         {
+            "Src": "MS",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Eighth grade"
+        },
+        {
             "Src": "9th",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Ninth grade"
         },
@@ -127,6 +135,10 @@
         },
         {
             "Src": "12+",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Other"
+        },
+        {
+            "Src": "CON",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Other"
         },
         {

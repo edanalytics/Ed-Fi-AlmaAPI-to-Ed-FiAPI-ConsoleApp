@@ -21,10 +21,10 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         private readonly ILoadExceptionHandler _exceptionHandler;
         private readonly ICourseOfferingTransformer _courseOfferingTransform;
         private readonly ILogger _appLog;
-        public CourseOfferingProcessor(IAlmaApi almaApi, 
+        public CourseOfferingProcessor(IAlmaApi almaApi,
                                        IEdFiApi edFiApi,
                                        ICourseOfferingTransformer courseOfferingTransform,
-                                        ILoggerFactory logger,
+                                       ILoggerFactory logger,
                                        ILoadExceptionHandler exceptionHandler)
         {
             _apiAlma = almaApi;
@@ -36,29 +36,39 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
         public void ExecuteETL(string almaSchoolCode, int stateSchoolId, string schoolYearId = "")
         {
             _appLog.LogInformation($"Processing Courses offered at School ({almaSchoolCode}) POSTS (new records and updates)...");
-            ProcessPosts(almaSchoolCode, stateSchoolId,schoolYearId);
+            ProcessPosts(almaSchoolCode, stateSchoolId, schoolYearId);
         }
 
-        private void ProcessPosts(string almaSchoolCode, int stateSchoolId,string schoolYearId)
+        private void ProcessPosts(string almaSchoolCode, int stateSchoolId, string schoolYearId)
         {
-            var almaCoursesOffered = _apiAlma.CourseOffering.Extract(almaSchoolCode,schoolYearId);
-            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode,schoolYearId);
+            var almaCoursesOffered = _apiAlma.CourseOffering.Extract(almaSchoolCode, schoolYearId);
+            var almaSessions = _apiAlma.Sessions.Extract(almaSchoolCode, schoolYearId);
+            var almaSections = _apiAlma.Sections.Extract(almaSchoolCode, schoolYearId);
             // Transform
-            Transform(stateSchoolId, almaCoursesOffered, almaSessions).ForEach(x => Load(x, almaSchoolCode));
+            //Transform(stateSchoolId, almaCoursesOffered, almaSessions).ForEach(x => Load(x, almaSchoolCode));
+            Transform(stateSchoolId, almaSections, almaSessions).ForEach(x => Load(x, almaSchoolCode));
             ConsoleHelpers.WriteTextReplacingLastLine("");
             _appLog.LogInformation($"Processed {almaCoursesOffered.Count} courses offered.");
         }
 
-        private List<EdFiCourseOffering> Transform(int schoolId, List<Course> almaCourses, List<Session> almaSessions)
+        private List<EdFiCourseOffering> Transform(int schoolId, List<Section> almaSections, List<Session> almaSessions)
         {
-            return almaCourses.Select(course => _courseOfferingTransform.TransformSrcToEdFi(schoolId, course, almaSessions))
-                                        .GroupBy(x => new { x.Id,
+            var coursesOffering = new List<EdFiCourseOffering>();
+            var courseOffering = almaSections.Select(courseItem => _courseOfferingTransform.TransformSrcToEdFi(schoolId, courseItem, almaSessions)).ToList();
+            courseOffering.ForEach(c => { coursesOffering.AddRange(c); });
+            var courseList = coursesOffering.Select(course => course)
+                                        .GroupBy(x => new
+                                        {
+                                            x.Id,
+                                            x.LocalCourseCode,
                                             x.CourseReference.CourseCode,
-                                            x.SchoolReference.SchoolId,
                                             x.SessionReference.SchoolYear,
-                                            x.SessionReference.SessionName })
+                                            x.SessionReference.SchoolId,
+                                            x.SessionReference.SessionName
+                                        })
                                         .Select(g => g.First())
-                                        .ToList().ToList(); ;
+                                        .ToList();
+            return courseList;
         }
 
         private void Load(EdFiCourseOffering resource, string almaSchoolCode)
@@ -76,7 +86,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Processors.Alma
                 {
                     ConsoleHelpers.WriteTextReplacingLastLine($"{RecordIndex} Courses Offered Registered. (Last course registered: {resource.LocalCourseTitle})");
                 }
-                
+
             }
             catch (Exception ex)
             {

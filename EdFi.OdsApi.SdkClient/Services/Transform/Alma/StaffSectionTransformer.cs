@@ -1,4 +1,4 @@
-﻿using Alma.Api.Sdk.Models;
+using Alma.Api.Sdk.Models;
 using EdFi.OdsApi.Sdk.Models.Resources;
 using System;
 using System.Collections.Generic;
@@ -23,11 +23,14 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             {
                 if (classItem.Course != null)
                 {
-                    var courseCode = string.IsNullOrEmpty(classItem.Course.code) ? classItem.Course.id : classItem.Course.code;
-                    var sessionName = _sessionNameTransformer.TransformSrcToEdFi(almaSessions, classItem.Course.schoolYearId, classItem.Course.effectiveDate);
-                    var edFiCourseOfferingReference = new EdFiCourseOfferingReference(courseCode, schoolId, Convert.ToDateTime(classItem.Course.SchoolYear.endDate).Year, sessionName);
-                    sectionList.Add(new EdFiSection(null, courseCode, edFiCourseOfferingReference, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, classItem.ClassName));
-
+                    foreach (var term in classItem.gradingPeriods)
+                    {
+                        var courseCode = string.IsNullOrEmpty(classItem.Course.code) ? classItem.Course.id : classItem.Course.code;
+                        //Get the correct Session name
+                        var sessionName = _sessionNameTransformer.TransformSrcToEdFi(term, almaSessions);
+                        var edFiCourseOfferingReference = new EdFiCourseOfferingReference(courseCode, schoolId, Convert.ToDateTime(classItem.Course.SchoolYear.endDate).Year, sessionName);
+                        sectionList.Add(new EdFiSection(null, courseCode, edFiCourseOfferingReference, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, classItem.ClassName));
+                    }
                 }
             }
             return sectionList;

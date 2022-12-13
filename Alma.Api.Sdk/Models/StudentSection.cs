@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Alma.Api.Sdk.Models
@@ -20,6 +20,7 @@ namespace Alma.Api.Sdk.Models
         public string className { get; set; }
         public string courseId { get; set; }
         public Course Course { get; set; }
+        public List<string> gradingPeriods { get; set; }
         public string status { get; set; }
         public DateTime date { get; set; }
     }
