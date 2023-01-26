@@ -22,15 +22,19 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             foreach (var section in almaSection)
             {
                 //The same class could exist in diferent periods
-                foreach (var term in section.gradingPeriods)
+                if (section.gradingPeriods != null) //TODO: Figure out why these are null.
                 {
-                    var courseCode = string.IsNullOrEmpty(section.Course.code) ? section.Course.id : section.Course.code;
-                    edfiSecions.Add(new EdFiSection(null, section.id,
-                    new EdFiCourseOfferingReference(courseCode, schoolId, section.SchoolYear.endDate.Year,
-                       _sessionNameTransformer.TransformSrcToEdFi(term, almaSessions)),
-                    null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, section.name));
+                    foreach (var term in section.gradingPeriods)
+                    {
+                        var courseCode = string.IsNullOrEmpty(section.Course.code) ? section.Course.id : section.Course.code;
+                        edfiSecions.Add(new EdFiSection(null, section.id,
+                        new EdFiCourseOfferingReference(courseCode, schoolId, section.SchoolYear.endDate.Year,
+                           _sessionNameTransformer.TransformSrcToEdFi(term, almaSessions)),
+                        null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, section.name));
 
+                    }
                 }
+                
 
             }
             return edfiSecions;

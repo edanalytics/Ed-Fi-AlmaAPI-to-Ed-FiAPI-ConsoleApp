@@ -73,12 +73,15 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var courseCode = string.IsNullOrEmpty(srcSection.Course.code) ? srcSection.Course.id : srcSection.Course.code;
             var courseReference = new EdFiCourseReference(courseCode, schoolId, null);
             var schoolReference = new EdFiSchoolReference(schoolId);
-            foreach (var term in srcSection.gradingPeriods)
+            if (srcSection.gradingPeriods != null) //TODO: Figure out why these are null.
             {
-                EedFiCoursesOffering.Add(new EdFiCourseOffering(null, courseCode, courseReference, schoolReference,
-                                         new EdFiSessionReference(schoolId, srcSection.Course.SchoolYear.endDate.Year, _sessionTransformer.TransformSrcToEdFi(term, almaSessions)), null, null, null, srcSection.Course.name,
-                                            GetEdFiGradeLevelDescriptors(srcSection.Course.GradeLevels)));
+                foreach (var term in srcSection.gradingPeriods)
+                {
+                    EedFiCoursesOffering.Add(new EdFiCourseOffering(null, courseCode, courseReference, schoolReference,
+                                             new EdFiSessionReference(schoolId, srcSection.Course.SchoolYear.endDate.Year, _sessionTransformer.TransformSrcToEdFi(term, almaSessions)), null, null, null, srcSection.Course.name,
+                                                GetEdFiGradeLevelDescriptors(srcSection.Course.GradeLevels)));
 
+                }
             }
 
             return EedFiCoursesOffering;

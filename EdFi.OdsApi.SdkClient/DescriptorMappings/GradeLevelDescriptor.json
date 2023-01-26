@@ -26,6 +26,10 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
         },
         {
+            "Src": "HDS",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
+        },
+        {
             "Src": "PS",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
         },
