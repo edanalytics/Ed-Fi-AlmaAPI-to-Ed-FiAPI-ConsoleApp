@@ -126,6 +126,17 @@ namespace EdFi.AlmaToEdFi.Cmd.Helpers
             return settings.AlmaAPI.Connections.Alma.SourceConnection.SchoolYearFilter;
         }
 
+        public static int GetEdfiSchoolYear()
+        {
+            string strSchoolYear = StudentTranslation.GetSchoolYear();
+            int schoolYear = int.Parse(strSchoolYear.Substring(strSchoolYear.IndexOf("-")+1));
+            if (schoolYear < 100)
+            {
+                schoolYear += 2000;
+            }
+            return schoolYear;
+        }
+
         public static void buildCache()
         {
             var config = GetConfiguration().Build();
