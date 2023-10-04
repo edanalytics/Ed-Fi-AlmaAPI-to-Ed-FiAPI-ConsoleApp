@@ -32,6 +32,9 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
                     //Use a helper function to translate the almaID to a StateId.
                     StudentTranslation st = new StudentTranslation();
                     Student studentResponse = StudentTranslation.GetStudentById(student.id);
+                    string strSchoolYear = StudentTranslation.GetSchoolYear();
+                    int schoolYear = int.Parse(strSchoolYear.Substring(strSchoolYear.Length - 4));
+
                     EdFiStudentReference studentReference = null;
                     //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
                     //This will not insert the student's information but an INFO has already been output for this student during the student posts.
@@ -45,7 +48,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
                     }
                     var gradeEnrollment = gradeLevels.Where(gl => gl.id == gradeLevelItem.gradeLevelId && gl.schoolYearId == gradeLevelItem.schoolYearId).ToList();
                     if (gradeEnrollment.Count > 0)
-                        edFiStudentSchoolAssociations.Add(new EdFiStudentSchoolAssociation(null, Convert.ToDateTime(gradeEnrollment.SingleOrDefault().effectiveDate), null, null, null, schoolReference, null,
+                        edFiStudentSchoolAssociations.Add(new EdFiStudentSchoolAssociation(null, Convert.ToDateTime(gradeEnrollment.SingleOrDefault().effectiveDate), null, null, null, schoolReference, new EdFiSchoolYearTypeReference(schoolYear),
                                 studentReference, null, null, null, GetEdFiGradeLevelDescriptors(gradeEnrollment.SingleOrDefault().gradeLevelAbbr)));
                 }
             }
@@ -59,6 +62,10 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             //Use a helper function to translate the almaID to a StateId.
             StudentTranslation st = new StudentTranslation();
             Student studentResponse = StudentTranslation.GetStudentById(srcEnrollment.studentId);
+            string strSchoolYear = StudentTranslation.GetSchoolYear();
+            int schoolYear = int.Parse(strSchoolYear.Substring(strSchoolYear.Length - 4));
+
+
             EdFiStudentReference studentReference = null;
             //Check to see if the returned StateId is null. If it is then try using the AlmaStudentID.
             //This will not insert the student's information but an INFO has already been output for this student during the student posts.
@@ -75,7 +82,7 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             {
                 var gradeEnrollment = gradeLevels.Where(gl => gl.id == gradeLevel.gradeLevelId && gl.schoolYearId == gradeLevel.schoolYearId).ToList();
                 if (gradeEnrollment.Count > 0)
-                    edFiStudentSchoolAssociations.Add(new EdFiStudentSchoolAssociation(null, Convert.ToDateTime(srcEnrollment.date), null, null, null, schoolReference, null,
+                    edFiStudentSchoolAssociations.Add(new EdFiStudentSchoolAssociation(null, Convert.ToDateTime(srcEnrollment.date), null, null, null, schoolReference, new EdFiSchoolYearTypeReference(schoolYear),
                             studentReference, null, null, null, GetEdFiGradeLevelDescriptors(gradeEnrollment.SingleOrDefault().gradeLevelAbbr)));
             }
 
