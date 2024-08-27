@@ -20,6 +20,7 @@ using System.Text;
 using Newtonsoft.Json;
 using RestSharp.Portable;
 using RestSharp.Portable.HttpClient;
+using Newtonsoft.Json.Linq;
 
 namespace EdFi.OdsApi.Sdk.Client
 {
@@ -347,11 +348,63 @@ namespace EdFi.OdsApi.Sdk.Client
         {
             try
             {
-                return obj != null ? JsonConvert.SerializeObject(obj) : null;
+                if (obj != null)
+                {
+                    string json = JsonConvert.SerializeObject(obj);
+                    JObject jObject = JObject.Parse(json);
+                    RemoveEmptyElements(jObject);
+                    return jObject.ToString();
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
                 throw new ApiException(500, e.Message);
+            }
+        }
+
+
+        private static void RemoveEmptyElements(JToken token)
+        {
+            if (token.Type == JTokenType.Object)
+            {
+                var jObject = (JObject)token;
+                foreach (var property in jObject.Properties().ToList())
+                {
+                    RemoveEmptyElements(property.Value);
+                }
+
+                // Remove properties with null or empty values
+                var emptyProperties = jObject.Properties()
+                                             .Where(p => p.Value.Type == JTokenType.Null ||
+                                                          (p.Value.Type == JTokenType.Object && !p.Value.HasValues) ||
+                                                          (p.Value.Type == JTokenType.Array && !p.Value.HasValues))
+                                             .ToList();
+                foreach (var property in emptyProperties)
+                {
+                    property.Remove();
+                }
+            }
+            else if (token.Type == JTokenType.Array)
+            {
+                var jArray = (JArray)token;
+                for (int i = 0; i < jArray.Count; i++)
+                {
+                    RemoveEmptyElements(jArray[i]);
+                }
+                // Remove empty array items
+                foreach (var item in jArray.ToList())
+                {
+                    if (item.Type == JTokenType.Null ||
+                        (item.Type == JTokenType.Object && !item.HasValues) ||
+                        (item.Type == JTokenType.Array && !item.HasValues))
+                    {
+                        jArray.Remove(item);
+                    }
+                }
             }
         }
 

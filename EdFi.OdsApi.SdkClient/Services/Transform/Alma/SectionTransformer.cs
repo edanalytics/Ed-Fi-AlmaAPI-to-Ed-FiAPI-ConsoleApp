@@ -21,6 +21,10 @@ namespace EdFi.AlmaToEdFi.Cmd.Services.Transform.Alma
             var edfiSecions = new List<EdFiSection>();
             foreach (var section in almaSection)
             {
+                if (section.courseId == "628e5ac94c0c0736544a34c7")
+                {
+
+                }
                 //The same class could exist in diferent periods
                 if (section.gradingPeriods != null) //TODO: Figure out why these are null.
                 {

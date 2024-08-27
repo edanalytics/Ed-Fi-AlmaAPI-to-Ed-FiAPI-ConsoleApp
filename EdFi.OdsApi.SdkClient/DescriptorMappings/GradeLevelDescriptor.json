@@ -14,6 +14,14 @@
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
         },
         {
+            "Src": "Tod",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
+        },
+        {
+            "Src": "Inf",
+            "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Preschool/Prekindergarten"
+        },
+        {
             "Src": "PK1",
             "Dest": "uri://ed-fi.org/GradeLevelDescriptor#Early Education"
         },

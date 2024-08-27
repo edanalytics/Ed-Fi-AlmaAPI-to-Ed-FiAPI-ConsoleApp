@@ -1,61 +1,65 @@
 {
     "Descriptor": "CalendarEventDescriptor",
     "Mapping": [
-      {
-        "Src": "teacher in-service day",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Instructional day"
-      },
-      {
-        "Src": "other / info",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
-      },
-      {
-        "Src": "non-school day",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Non-instructional day"
-      },
-      {
-        "Src": "holiday",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
-      },
-      {
-        "Src": "break",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
-      },
-      {
-        "Src": "inclement weather day",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Weather day"
-      },
-      {
-        "Src": "school closed",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
-      },
-      {
-        "Src": "friday school",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Teacher only day"
-      },
-      {
-        "Src": "thanksgiving break",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
-      },
-      {
-        "Src": "christmas break",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
-      },
-      {
-        "Src": "spring break",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
-      },
-      {
-        "Src": "labor day",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
-      },
-      {
-        "Src": "friday",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Teacher only day"
-      },
-      {
-        "Src": "default",
-        "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
-      }
+        {
+            "Src": "teacher in-service day",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Non-instructional day"
+        },
+        {
+            "Src": "Instructional Day",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Instructional day"
+        },
+        {
+            "Src": "other / info",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
+        },
+        {
+            "Src": "non-school day",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Non-instructional day"
+        },
+        {
+            "Src": "holiday",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
+        },
+        {
+            "Src": "break",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
+        },
+        {
+            "Src": "inclement weather day",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Weather day"
+        },
+        {
+            "Src": "school closed",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
+        },
+        {
+            "Src": "friday school",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Teacher only day"
+        },
+        {
+            "Src": "thanksgiving break",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
+        },
+        {
+            "Src": "christmas break",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
+        },
+        {
+            "Src": "spring break",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
+        },
+        {
+            "Src": "labor day",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Holiday"
+        },
+        {
+            "Src": "friday",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Teacher only day"
+        },
+        {
+            "Src": "default",
+            "Dest": "uri://ed-fi.org/CalendarEventDescriptor#Other"
+        }
     ]
   }
